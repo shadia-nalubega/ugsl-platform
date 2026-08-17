@@ -4,7 +4,7 @@ import Home from "./pages/home.jsx";
 import About from "./pages/onboarding/About.jsx";
 import Lesson from "./pages/Lesson.jsx";
 import CreateLesson from "./pages/teachers/CreateLesson.jsx";
-import EnjoyingUgSL from "./pages/EnjoyingUgSL.jsx";
+import EnjoyingUgSL from "./pages/EnjoyingUgsl.jsx";
 import Signup from "./pages/auth/Signup.jsx";
 
 

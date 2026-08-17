@@ -30,3 +30,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+// casing very important on linux vs vscode

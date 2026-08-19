@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 
-// Edit this array to add/remove/reorder nav links
 const NAV_LINKS = [
   { label: "Home", path: "/" },
   { label: "Courses", path: "/courses" },
@@ -18,33 +17,30 @@ export default function Navbar() {
       {/* Logo */}
       <Link to="/" className="flex items-center gap-2">
         <img src={logo} alt="UgSL logo" className="w-15 h-12" />
-        
       </Link>
 
-      {/* Nav links — mapped from NAV_LINKS above */}
+      {/* Nav links */}
       <div className="hidden md:flex gap-8">
         {NAV_LINKS.map((link) => (
-          <Link
+          <NavLink
             key={link.path}
             to={link.path}
-            className="text-gray-700 hover:text-indigo-600 font-medium"
+            className={({ isActive }) =>
+              `font-medium ${isActive ? "text-indigo-600" : "text-gray-700 hover:text-indigo-600"}`
+            }
           >
             {link.label}
-          </Link>
+          </NavLink>
         ))}
       </div>
 
-      {/* Right side: search + auth buttons */}
+      {/* Right side */}
       <div className="flex items-center gap-4">
-        {/* <button aria-label="Search">🔍</button> */}
-        {/* <Link to="/auth/login" className="text-indigo-600 font-medium">
-          Log in
-        </Link> */}
         <Link
           to="/auth/signup"
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700"
         >
-        GET STARTED
+          GET STARTED
         </Link>
       </div>
     </nav>

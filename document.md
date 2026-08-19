@@ -82,3 +82,6 @@ merged. Quick sanity check going forward: **`App.jsx` should always
 contain the words `Router`/`Routes`/`Route` and nothing else visual;
 page files should never contain those words.** If a file has both kinds
 of imports, something's in the wrong place.
+
+
+- Navbar: no logged-in state yet — profile isn't shown anywhere, and "GET STARTED" doesn't disappear once a user has an account. Needs basic auth state (logged in/out) wired first.

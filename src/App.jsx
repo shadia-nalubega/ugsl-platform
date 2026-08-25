@@ -9,7 +9,9 @@ import LearnerDash from "./pages/learner/learner-dash.jsx";
 import Courses from "./pages/learner/Courses.jsx";
 import CategoryLessons from "./pages/learner/CategoryLessons.jsx";
 import LessonComplete from "./pages/learner/LessonComplete.jsx";
-import Lesson from "./pages/learner/Lesson.jsx";
+import LessonAlt from "./pages/learner/LessonAlt.jsx";
+import Lesson from "./pages/Lesson.jsx";
+
 
 export default function App() {
   return (
@@ -17,6 +19,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/onboarding" element={<About />} />
+        <Route path="/lesson-alt/:lessonId" element={<LessonAlt />} />
         <Route path="/lesson/:lessonId" element={<Lesson />} />
         <Route path="/teacher/create-lesson" element={<CreateLesson />} />
         <Route path="/enjoying-ugsl" element={<EnjoyingUgSL />} />

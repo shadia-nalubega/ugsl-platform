@@ -1,31 +1,36 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
-  ChevronLeft,
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize,
-  CheckCircle2,
   ArrowRight,
+  CheckCircle2,
+  Eye,
+  Sparkles,
+  User,
+  MessageSquare,
+  HelpCircle,
+  RefreshCw,
+  Hand,
 } from "lucide-react";
 import { LESSONS } from "../data/lessons.js";
 import Navbar from "../components/Navbar.jsx";
 
 export default function Lesson() {
-  const { id } = useParams();
-  const lesson = LESSONS.find((l) => l.id === id);
+  const { lessonId } = useParams();
+  const lesson = LESSONS.find((l) => l.id === lessonId);
 
-  const [stage, setStage] = useState("overview");
+  // Step wizard state: 1 = Situation, 2 = Breakdown, 3 = Challenge, 4 = Reflection
+  const [step, setStep] = useState(1);
 
   if (!lesson) {
     return (
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="px-8 py-20 text-center">
-          <p className="text-xl font-semibold">Lesson not found.</p>
-          <Link to="/courses" className="text-indigo-600 font-medium mt-4 inline-block">
+          <p className="text-xl font-semibold text-gray-900">Lesson not found.</p>
+          <Link
+            to="/Enjoying-UgSL"
+            className="text-indigo-600 font-medium mt-4 inline-block hover:underline text-sm"
+          >
             ← Back to all courses
           </Link>
         </div>
@@ -34,400 +39,300 @@ export default function Lesson() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#faf9ff]">
       <Navbar />
-      {stage === "overview" ? (
-        <LessonOverview lesson={lesson} onContinue={() => setStage("content")} />
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Title placed above both columns */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 text-indigo-600 text-xs font-semibold uppercase tracking-wide mb-1">
+            <Sparkles className="w-4 h-4" />
+            Scenario-Based Lesson
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            {lesson.title}
+          </h1>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          {/* LEFT COLUMN: Clean Video Player with Top-Aligned Image */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="relative aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-sm border border-gray-200">
+              <img
+                src={lesson.thumbnail}
+                alt={lesson.title}
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+
+            <div className="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-4 flex items-start gap-3 shadow-xs">
+              <Sparkles className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
+              <p className="text-xs sm:text-sm text-indigo-950 font-medium leading-relaxed">
+                <strong className="font-semibold text-indigo-900">Goal: </strong>
+                {lesson.canDoStatement}
+              </p>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: Interactive Sidebar Wizard */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm sticky top-6">
+              {step === 1 && (
+                <SituationSidebar lesson={lesson} onNext={() => setStep(2)} />
+              )}
+              {step === 2 && (
+                <BreakdownSidebar lesson={lesson} onNext={() => setStep(3)} />
+              )}
+              {step === 3 && (
+                <ChallengeSidebar lesson={lesson} onNext={() => setStep(4)} />
+              )}
+              {step === 4 && <AssessmentSidebar lesson={lesson} />}
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+// STEP 1: CONVERSATION EXCHANGE (Sidebar)
+function SituationSidebar({ lesson, onNext }) {
+  return (
+    <div className="space-y-5">
+      <div>
+        <p className="text-xs uppercase tracking-wider text-indigo-600 font-bold mb-1">
+          Step 1 of 4
+        </p>
+        <h2 className="text-xl font-bold text-gray-900">Conversation Exchange</h2>
+      </div>
+
+      <div className="space-y-3">
+        {lesson.dialogue?.map((item, idx) => {
+          const isLearner = item.speaker.includes("You");
+          return (
+            <div
+              key={idx}
+              className={`p-4 rounded-xl text-sm transition-all ${
+                isLearner
+                  ? "bg-indigo-50/70 border border-indigo-100 text-indigo-950 shadow-xs"
+                  : "bg-gray-50 border border-gray-100 text-gray-800"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 text-gray-500">
+                  <User className="w-3.5 h-3.5 text-indigo-600" />
+                  {item.speaker}
+                </span>
+              </div>
+              <p className="font-semibold text-sm sm:text-base text-gray-900 flex items-center gap-2">
+                <Hand className="w-4 h-4 text-indigo-600 shrink-0" />
+                "{item.text}"
+              </p>
+              <p className="text-xs text-indigo-600 mt-2 font-mono bg-white/80 px-2 py-1 rounded w-fit border border-indigo-100">
+                UgSL: {item.ugslGloss}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      <button
+        onClick={onNext}
+        className="w-full bg-indigo-600 text-white font-semibold h-11 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
+      >
+        Learn the Building Blocks <ArrowRight className="w-4 h-4" />
+      </button>
+    </div>
+  );
+}
+
+// STEP 2: VOCABULARY BREAKDOWN (Sidebar)
+function BreakdownSidebar({ lesson, onNext }) {
+  return (
+    <div className="space-y-5">
+      <div>
+        <p className="text-xs uppercase tracking-wider text-indigo-600 font-bold mb-1">
+          Step 2 of 4
+        </p>
+        <h2 className="text-xl font-bold text-gray-900">Key Building Blocks</h2>
+      </div>
+
+      <div className="space-y-3 max-h-[50vh] overflow-y-auto pr-1">
+        {lesson.breakdownItems?.map((item, idx) => (
+          <div
+            key={idx}
+            className="p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex flex-col gap-1.5"
+          >
+            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
+              <Hand className="w-3.5 h-3.5 text-indigo-600" />
+              {item.sign}
+            </h3>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              {item.description}
+            </p>
+            <span className="inline-flex items-center gap-1.5 mt-1 text-[11px] text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg font-medium border border-indigo-100/60 w-fit">
+              <Sparkles className="w-3 h-3 text-indigo-500" /> {item.tip}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={onNext}
+        className="w-full bg-indigo-600 text-white font-semibold h-11 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
+      >
+        Try Interactive Turn <ArrowRight className="w-4 h-4" />
+      </button>
+    </div>
+  );
+}
+
+// STEP 3: INTERACTION CHALLENGE (Sidebar)
+function ChallengeSidebar({ lesson, onNext }) {
+  const [revealed, setRevealed] = useState(false);
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <p className="text-xs uppercase tracking-wider text-indigo-600 font-bold mb-1">
+          Step 3 of 4
+        </p>
+        <h2 className="text-xl font-bold text-gray-900">Perform Your Turn</h2>
+      </div>
+
+      <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+          Partner asks:
+        </p>
+        <p className="text-sm font-medium text-gray-900 flex items-center gap-2">
+          <Hand className="w-4 h-4 text-indigo-600 shrink-0" />
+          "{lesson.prompt?.partnerText}"
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl bg-indigo-50/60 border border-indigo-100 text-center space-y-1.5">
+        <MessageSquare className="w-5 h-5 text-indigo-600 mx-auto" />
+        <p className="text-xs font-semibold text-indigo-900 uppercase tracking-wider">
+          Your Task
+        </p>
+        <p className="text-xs sm:text-sm font-bold text-gray-900">
+          {lesson.prompt?.learnerTask}
+        </p>
+      </div>
+
+      {revealed ? (
+        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-900 space-y-1">
+          <p className="text-[11px] uppercase tracking-wider font-bold text-emerald-700 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5" /> Model Answer
+          </p>
+          <p className="font-mono font-bold text-xs sm:text-sm">
+            {lesson.prompt?.modelAnswer}
+          </p>
+        </div>
       ) : (
-        <LessonContent lesson={lesson} />
+        <button
+          onClick={() => setRevealed(true)}
+          className="w-full border border-indigo-200 text-indigo-600 font-semibold h-10 rounded-xl hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 cursor-pointer text-xs"
+        >
+          <Eye className="w-4 h-4" /> Reveal Answer
+        </button>
+      )}
+
+      <button
+        onClick={onNext}
+        className="w-full bg-indigo-600 text-white font-semibold h-11 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
+      >
+        Self-Assess <ArrowRight className="w-4 h-4" />
+      </button>
+    </div>
+  );
+}
+
+// STEP 4: SELF-ASSESSMENT (Sidebar)
+function AssessmentSidebar({ lesson }) {
+  const [selectedRating, setSelectedRating] = useState(null);
+
+  return (
+    <div className="space-y-5 text-center">
+      <div>
+        <div className="w-10 h-10 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto text-indigo-600 mb-2">
+          <Sparkles className="w-5 h-5" />
+        </div>
+        <h2 className="text-xl font-bold text-gray-900">How did you do?</h2>
+        <p className="text-gray-500 text-xs mt-1">
+          Be honest! This updates your capability tracker.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-2.5">
+        <button
+          onClick={() => setSelectedRating("confident")}
+          className={`p-3 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer ${
+            selectedRating === "confident"
+              ? "border-emerald-500 bg-emerald-50 text-emerald-950 ring-2 ring-emerald-500/20"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
+        >
+          <CheckCircle2
+            className={`w-5 h-5 shrink-0 ${
+              selectedRating === "confident" ? "text-emerald-500" : "text-gray-400"
+            }`}
+          />
+          <div>
+            <p className="font-bold text-xs sm:text-sm">Confident</p>
+            <p className="text-[11px] text-gray-500">Ready for real conversations</p>
+          </div>
+        </button>
+
+        <button
+          onClick={() => setSelectedRating("almost")}
+          className={`p-3 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer ${
+            selectedRating === "almost"
+              ? "border-amber-500 bg-amber-50 text-amber-950 ring-2 ring-amber-500/20"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
+        >
+          <HelpCircle
+            className={`w-5 h-5 shrink-0 ${
+              selectedRating === "almost" ? "text-amber-500" : "text-gray-400"
+            }`}
+          />
+          <div>
+            <p className="font-bold text-xs sm:text-sm">Almost there</p>
+            <p className="text-[11px] text-gray-500">Just need a little review</p>
+          </div>
+        </button>
+
+        <button
+          onClick={() => setSelectedRating("practice")}
+          className={`p-3 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer ${
+            selectedRating === "practice"
+              ? "border-rose-500 bg-rose-50 text-rose-950 ring-2 ring-rose-500/20"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
+        >
+          <RefreshCw
+            className={`w-5 h-5 shrink-0 ${
+              selectedRating === "practice" ? "text-rose-500" : "text-gray-400"
+            }`}
+          />
+          <div>
+            <p className="font-bold text-xs sm:text-sm">Need practice</p>
+            <p className="text-[11px] text-gray-500">Revisit the building blocks</p>
+          </div>
+        </button>
+      </div>
+
+      {selectedRating && (
+        <div className="pt-2">
+          <Link
+            to="/Enjoying-UgSL"
+            className="w-full bg-indigo-600 text-white font-semibold h-11 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/25 transition-all inline-flex items-center justify-center gap-2 text-sm"
+          >
+            <CheckCircle2 className="w-4 h-4" /> Save & Continue
+          </Link>
+        </div>
       )}
     </div>
-  );
-}
-
-function LessonOverview({ lesson, onContinue }) {
-  return (
-    <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12">
-      <Link
-        to="/courses"
-        className="inline-flex items-center gap-1 text-gray-600 text-sm font-medium hover:text-indigo-600 transition"
-      >
-        <ChevronLeft className="w-4 h-4" />
-        Back to courses
-      </Link>
-
-      <div className="text-center mt-12">
-        <p className="text-indigo-600 text-sm font-semibold tracking-wide uppercase">
-          Lesson Overview
-        </p>
-        <h1 className="text-4xl sm:text-5xl font-bold mt-2 text-gray-900">
-          {lesson.title}
-        </h1>
-        <p className="text-gray-500 mt-3">{lesson.description}</p>
-      </div>
-
-      <div className="border-t mt-10 pt-8">
-        <p className="text-gray-600">In this lesson, you will learn:</p>
-
-        <div className="mt-6">
-          <p className="text-indigo-600 font-semibold">Signs</p>
-          <div className="flex flex-wrap gap-2 mt-3">
-            {lesson.signs.map((sign) => (
-              <span
-                key={sign}
-                className="bg-indigo-50 text-indigo-700 px-3 py-2 rounded-lg text-sm"
-              >
-                {sign}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {lesson.phrases?.length > 0 && (
-          <div className="mt-7">
-            <p className="text-indigo-600 font-semibold">Phrases</p>
-            <div className="mt-3 space-y-2">
-              {lesson.phrases.map((phrase) => (
-                <div key={phrase} className="flex items-center gap-2 text-gray-700">
-                  <CheckCircle2 className="w-4 h-4 text-indigo-500" />
-                  {phrase}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="flex justify-center mt-10">
-          <button
-            onClick={onContinue}
-            className="inline-flex items-center gap-2 bg-indigo-600 text-white font-medium px-10 py-3 rounded-xl hover:bg-indigo-700 transition"
-          >
-            Start Lesson
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LessonContent({ lesson }) {
-  const videoRef = useRef(null);
-  const [showAccountPrompt, setShowAccountPrompt] = useState(false);
-
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [playbackRate, setPlaybackRate] = useState(1);
-
-  const captions = lesson.captions || [
-    { start: 0, end: 3, text: "Hello" },
-    { start: 3, end: 6, text: "Good morning" },
-    { start: 6, end: 9, text: "How are you?" },
-  ];
-
-  const currentCaption =
-    captions.find((caption) => currentTime >= caption.start && currentTime < caption.end) ||
-    null;
-
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-    } else {
-      videoRef.current.pause();
-    }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !videoRef.current.muted;
-    setIsMuted(videoRef.current.muted);
-  };
-
-  const changeSpeed = (rate) => {
-    if (!videoRef.current) return;
-    videoRef.current.playbackRate = rate;
-    setPlaybackRate(rate);
-  };
-
-  const handleTimeUpdate = () => {
-    if (!videoRef.current) return;
-    setCurrentTime(videoRef.current.currentTime);
-  };
-
-  const handleLoadedMetadata = () => {
-    if (!videoRef.current) return;
-    setDuration(videoRef.current.duration);
-  };
-
-  const handleSeek = (event) => {
-    if (!videoRef.current) return;
-    const newTime = Number(event.target.value);
-    videoRef.current.currentTime = newTime;
-    setCurrentTime(newTime);
-  };
-
-  const handleFullscreen = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.requestFullscreen) {
-      videoRef.current.requestFullscreen();
-    }
-  };
-
-  const formatTime = (time) => {
-    if (!time || Number.isNaN(time)) return "0:00";
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60).toString().padStart(2, "0");
-    return `${minutes}:${seconds}`;
-  };
-
-  const currentCaptionIndex = captions.findIndex(
-    (caption) => currentTime >= caption.start && currentTime < caption.end
-  );
-
-  const currentSignIndex =
-    lesson.signs?.length
-      ? currentCaptionIndex >= 0
-        ? Math.min(currentCaptionIndex, lesson.signs.length - 1)
-        : 0
-      : -1;
-
-  return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        to="/courses"
-        className="inline-flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-indigo-600 transition mb-6"
-      >
-        <ChevronLeft className="w-4 h-4" />
-        Back to courses
-      </Link>
-
-      <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
-        <section>
-          <div className="relative overflow-hidden rounded-2xl bg-gray-950 aspect-video">
-            {lesson.video ? (
-              <>
-                <video
-                  ref={videoRef}
-                  src={lesson.video}
-                  poster={lesson.thumbnail}
-                  className="w-full h-full object-cover"
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                  onTimeUpdate={handleTimeUpdate}
-                  onLoadedMetadata={handleLoadedMetadata}
-                />
-
-                {currentCaption && (
-                  <div className="absolute bottom-24 left-4 right-4 flex justify-center pointer-events-none">
-                    <div className="bg-black/80 text-white px-5 py-3 rounded-xl text-center text-base sm:text-lg font-medium max-w-xl backdrop-blur-sm shadow-lg">
-                      {currentCaption.text}
-                    </div>
-                  </div>
-                )}
-
-                <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 pt-10 bg-gradient-to-t from-black/90 to-transparent">
-                  <input
-                    type="range"
-                    min="0"
-                    max={duration || 0}
-                    value={currentTime}
-                    onChange={handleSeek}
-                    className="w-full accent-indigo-500 cursor-pointer"
-                    aria-label="Video progress"
-                  />
-
-                  <div className="flex items-center justify-between text-white mt-2">
-                    <div className="flex items-center gap-4">
-                      <button
-                        onClick={togglePlay}
-                        aria-label={isPlaying ? "Pause video" : "Play video"}
-                        className="hover:text-indigo-300 transition"
-                      >
-                        {isPlaying ? (
-                          <Pause className="w-5 h-5 fill-current" />
-                        ) : (
-                          <Play className="w-5 h-5 fill-current" />
-                        )}
-                      </button>
-
-                      <button
-                        onClick={toggleMute}
-                        aria-label={isMuted ? "Unmute video" : "Mute video"}
-                        className="hover:text-indigo-300 transition"
-                      >
-                        {isMuted ? (
-                          <VolumeX className="w-5 h-5" />
-                        ) : (
-                          <Volume2 className="w-5 h-5" />
-                        )}
-                      </button>
-
-                      <div className="flex items-center gap-1 bg-white/10 rounded-lg p-1">
-                        <button
-                          onClick={() => changeSpeed(0.5)}
-                          className={`text-xs px-2 py-1 rounded-md transition ${
-                            playbackRate === 0.5
-                              ? "bg-indigo-600 text-white"
-                              : "text-gray-300 hover:text-white"
-                          }`}
-                        >
-                          0.5x
-                        </button>
-                        <button
-                          onClick={() => changeSpeed(1)}
-                          className={`text-xs px-2 py-1 rounded-md transition ${
-                            playbackRate === 1
-                              ? "bg-indigo-600 text-white"
-                              : "text-gray-300 hover:text-white"
-                          }`}
-                        >
-                          1x
-                        </button>
-                      </div>
-
-                      <span className="text-xs text-gray-300">
-                        {formatTime(currentTime)} / {formatTime(duration)}
-                      </span>
-                    </div>
-
-                    <button
-                      onClick={handleFullscreen}
-                      aria-label="Fullscreen"
-                      className="hover:text-indigo-300 transition"
-                    >
-                      <Maximize className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className="relative w-full h-full">
-                <img
-                  src={lesson.thumbnail}
-                  alt={lesson.title}
-                  className="w-full h-full object-cover object-top opacity-80"
-                />
-                <div className="absolute inset-0 bg-black/10" />
-              </div>
-            )}
-          </div>
-        </section>
-
-        <aside className="border border-gray-100 rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center justify-between gap-4">
-            <span className="bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-full">
-              {lesson.level}
-            </span>
-            <span className="text-sm text-gray-400">⏱ {lesson.duration}</span>
-          </div>
-
-          <h1 className="text-3xl font-bold text-gray-900 mt-5">{lesson.title}</h1>
-          <p className="text-gray-500 mt-2 leading-relaxed">{lesson.description}</p>
-
-          <div className="mt-7 p-5 bg-indigo-50 rounded-xl">
-            <p className="text-xs uppercase tracking-wide text-indigo-500 font-semibold">
-              Currently learning
-            </p>
-            <h2 className="text-2xl font-bold text-gray-900 mt-1">
-              {currentSignIndex >= 0 ? lesson.signs[currentSignIndex] : "No sign selected"}
-            </h2>
-            {currentCaption && (
-              <p className="text-sm text-gray-600 mt-1">{currentCaption.text}</p>
-            )}
-          </div>
-
-          <div className="mt-7">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-semibold text-gray-800">Signs in this lesson</p>
-              <span className="text-xs text-gray-400">{lesson.signs.length} signs</span>
-            </div>
-
-            <div className="space-y-2">
-              {lesson.signs.map((sign, index) => (
-                <div
-                  key={sign}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition ${
-                    index === currentSignIndex
-                      ? "bg-indigo-100 text-indigo-700 font-medium"
-                      : "text-gray-600 bg-gray-50"
-                  }`}
-                >
-                  <span
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                      index === currentSignIndex
-                        ? "bg-indigo-600 text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    {index + 1}
-                  </span>
-                  {sign}
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-      </div>
-
-      <div className="mt-8 border-t pt-6 flex flex-col sm:flex-row gap-3">
-        <Link
-          to={`/lesson/${lesson.id}/quiz`}
-          className="inline-flex justify-center items-center bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-indigo-700 transition"
-        >
-          Try the Quiz →
-        </Link>
-
-       <Link
-  to="/enjoying-ugsl"
-  className="inline-flex justify-center items-center border border-indigo-600 text-indigo-600 px-6 py-3 rounded-xl font-medium hover:bg-indigo-50 transition"
->
-  Browse More Lessons
-</Link>
-      </div>
-
-      {/* {showAccountPrompt && (
-        <div
-          className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="account-prompt-title"
-        >
-          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center">
-            <h2
-              id="account-prompt-title"
-              className="text-xl font-bold text-gray-900"
-            >
-              Are you enjoying UgSL?
-            </h2>
-
-            <p className="text-gray-500 mt-2">
-              Create an account to save your progress, earn badges, and keep
-              learning where you left off.
-            </p>
-
-            <div className="flex flex-col gap-3 mt-6">
-              <Link
-                to="/auth/signup"
-                className="bg-indigo-600 text-white font-medium py-3 rounded-lg hover:bg-indigo-700 transition"
-              >
-                Create Your Account
-              </Link>
-
-              <Link
-                to="/courses"
-                className="text-gray-500 text-sm font-medium hover:text-gray-700 transition"
-                onClick={() => setShowAccountPrompt(false)}
-              >
-                Maybe Later
-              </Link>
-            </div>
-          </div>
-        </div>
-      )} */}
-
-    </main>
   );
 }

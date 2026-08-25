@@ -46,11 +46,13 @@ export default function CategoryLessons() {
                     Continue Learning
                   </span>
                 )}
-                <img
-                  src="/src/assets/numbers.jpg"
-                  alt={lesson.title}
-                  className="aspect-video w-full object-cover rounded-lg mb-2"
-                />
+                <div className="aspect-video w-full overflow-hidden rounded-lg mb-2">
+                  <img
+                    src={category.image}
+                    alt={lesson.title}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
                 <p className="text-xs text-purple-600 font-medium">{lesson.level}</p>
                 <p className="text-sm font-medium">{lesson.title}</p>
               </Link>

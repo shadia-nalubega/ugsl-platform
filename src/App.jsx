@@ -18,6 +18,7 @@ import FirstLessonOverview from "./pages/FirstLessonOverview.jsx";
 import SecondLessonOverview from "./pages/onboarding/SecondLessonOverview.jsx";
 import SecondLesson from "./pages/learner/SecondLesson.jsx";
 import Quiz from "./pages/learner/Quiz.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/onboarding" element={<About />} />
         <Route path="/lesson/introduction/overview" element={<FirstLessonOverview />} />
         <Route path="/onboarding/overview" element={<SecondLessonOverview />} />
+        <Route path="/about-us" element={<AboutUs />} />
 
         {/* Lessons */}
         <Route path="/lesson/basic-greetings" element={<SecondLesson />} />

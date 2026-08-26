@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import {
   Play,
   ArrowRight,
-  ShieldCheck,
   CheckCircle2,
   Users,
   GraduationCap,
   Store,
+  Sparkles,
+  BookOpen,
+  MapPin,
+  Compass
 } from "lucide-react";
 import heroImg from "../../assets/hero.jpg";
 
@@ -32,7 +35,26 @@ const GOALS = [
   },
 ];
 
-const LANGUAGES = ["English", "Luganda", "Swahili"];
+const JOURNEYS = [
+  {
+    id: "beginner",
+    title: "Beginner",
+    subtitle: "New to UgSL",
+    icon: Sparkles,
+  },
+  {
+    id: "intermediate",
+    title: "Intermediate",
+    subtitle: "Basic Signs",
+    icon: BookOpen,
+  },
+  {
+    id: "advanced",
+    title: "Advanced",
+    subtitle: "Fluent Flow",
+    icon: Compass,
+  },
+];
 
 export default function About() {
   const navigate = useNavigate();
@@ -40,7 +62,7 @@ export default function About() {
 
   const [videoDone, setVideoDone] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState("friends");
-  const [language, setLanguage] = useState("English");
+  const [journeyLevel, setJourneyLevel] = useState("beginner");
   const [location, setLocation] = useState("");
 
   function handlePlay() {
@@ -49,17 +71,18 @@ export default function About() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log({ selectedGoal, language, location });
-    navigate("/lesson/greetings");
+    console.log({ selectedGoal, journeyLevel, location });
+    navigate("/lesson/introduction/overview");
   }
 
   return (
     <div className="min-h-screen bg-[#faf9ff] flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <main className="max-w-5xl w-full mx-auto">
         <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+          
           {/* ================= LEFT SIDE (Video/Hero) ================= */}
           <section className="w-full h-full flex flex-col">
-            <div className="relative bg-indigo-600 rounded-3xl overflow-hidden min-h-[380px] lg:min-h-full flex items-center justify-center shadow-sm border border-indigo-100">
+            <div className="relative bg-indigo-600 rounded-3xl overflow-hidden min-h-[340px] lg:min-h-full flex items-center justify-center shadow-sm border border-indigo-100">
               <video
                 ref={videoRef}
                 poster={heroImg}
@@ -71,52 +94,48 @@ export default function About() {
                 <button
                   type="button"
                   onClick={handlePlay}
-                  aria-label="Play video"
-                  className="relative z-10 w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg shadow-indigo-900/20 hover:scale-105 transition-transform"
+                  aria-label="Play video preview"
+                  className="relative z-10 w-16 h-16 bg-white/95 rounded-full flex items-center justify-center shadow-xl shadow-indigo-950/20 hover:scale-105 transition-all cursor-pointer group"
                 >
-                  <Play className="w-6 h-6 text-indigo-600 fill-indigo-600 ml-1" />
+                  <Play className="w-6 h-6 text-indigo-600 fill-indigo-600 ml-1 group-hover:scale-110 transition-transform" />
                 </button>
               )}
 
-              {/* <div className="absolute bottom-4 left-4 right-4 z-10 bg-white/90 backdrop-blur-md rounded-2xl p-3.5 flex items-center gap-3 shadow-sm border border-white/40">
-                <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="w-4 h-4 text-indigo-600" />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-gray-800">
-                    Welcome to UgSL
-                  </p>
-                  <p className="text-[11px] text-gray-500 leading-tight">
-                    Watch the intro or select your main communication goal below.
-                  </p>
-                </div>
+              {/* Overlay Badge */}
+              {/* <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md rounded-xl px-3 py-1.5 border border-white/50 shadow-sm flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-bold text-gray-800 tracking-wide uppercase">
+                  UgSL Interactive Onboarding
+                </span>
               </div> */}
             </div>
           </section>
 
-          {/* ================= FORM SIDE ================= */}
+          {/* ================= RIGHT SIDE (Form) ================= */}
           <section className="w-full h-full flex flex-col">
-            <div className="w-full h-full bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 flex flex-col justify-between relative">
+            <div className="w-full h-full bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 flex flex-col justify-between">
               <div>
-                <div className="mb-5">
-                  <p className="text-indigo-600 text-xs font-semibold uppercase tracking-wide">
-                    Personalize your path
-                  </p>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1">
+                {/* Header */}
+                <div className="mb-6">
+                  <span className="text-indigo-600 text-xs font-bold uppercase tracking-wider bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
+                    Personalize Your Path
+                  </span>
+                  <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-2.5">
                     What is your primary goal?
                   </h1>
-                  <p className="text-gray-500 mt-1 text-xs leading-relaxed">
-                    Choose what you want to achieve first with Ugandan Sign Language.
+                  <p className="text-gray-500 mt-1 text-xs sm:text-sm leading-relaxed">
+                    Select your objective and experience level to tailor your UgSL scenarios.
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Goal Cards */}
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  
+                  {/* Goal Selection Cards */}
                   <div>
-                    <label className="block text-xs font-semibold text-gray-800 mb-2">
-                      Communication Goal
+                    <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2">
+                      1. Communication Goal
                     </label>
-                    <div className="space-y-2.5">
+                    <div className="space-y-2">
                       {GOALS.map((goal) => {
                         const selected = selectedGoal === goal.id;
                         const IconComponent = goal.icon;
@@ -125,16 +144,16 @@ export default function About() {
                             key={goal.id}
                             type="button"
                             onClick={() => setSelectedGoal(goal.id)}
-                            className={`w-full text-left p-3 rounded-xl border transition-all ${
+                            className={`w-full text-left p-3 rounded-2xl border-2 transition-all cursor-pointer ${
                               selected
-                                ? "border-indigo-600 bg-indigo-50/70 text-indigo-900"
-                                : "border-gray-200 hover:border-indigo-200 text-gray-700"
+                                ? "border-indigo-600 bg-indigo-50/50 text-indigo-950 shadow-xs"
+                                : "border-gray-100 hover:border-indigo-200 text-gray-700 bg-white"
                             }`}
                           >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
                                 <div
-                                  className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                                     selected
                                       ? "bg-indigo-600 text-white"
                                       : "bg-gray-100 text-gray-600"
@@ -143,10 +162,10 @@ export default function About() {
                                   <IconComponent className="w-4 h-4" />
                                 </div>
                                 <div>
-                                  <p className="text-xs font-semibold">
+                                  <p className="text-xs font-bold text-gray-900">
                                     {goal.title}
                                   </p>
-                                  <p className="text-[11px] text-gray-500 mt-0.5">
+                                  <p className="text-[11px] text-gray-500 mt-0.5 leading-tight">
                                     {goal.desc}
                                   </p>
                                 </div>
@@ -161,60 +180,79 @@ export default function About() {
                     </div>
                   </div>
 
-                  {/* Language Selection */}
+                  {/* Journey / Experience Level Selection Cards */}
                   <div>
-                    <label className="block text-xs font-semibold text-gray-800 mb-1">
-                      Preferred Language
+                    <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2">
+                      2. Select Your Journey (Experience Level)
                     </label>
-                    <select
-                      value={language}
-                      onChange={(e) => setLanguage(e.target.value)}
-                      className="w-full h-10 px-3.5 rounded-xl border border-gray-200 text-xs text-gray-700 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-50 transition bg-white"
-                    >
-                      {LANGUAGES.map((lang) => (
-                        <option key={lang} value={lang}>
-                          {lang}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="grid grid-cols-3 gap-2">
+                      {JOURNEYS.map((item) => {
+                        const isSelected = journeyLevel === item.id;
+                        const Icon = item.icon;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setJourneyLevel(item.id)}
+                            className={`p-3 rounded-2xl border-2 text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
+                              isSelected
+                                ? "border-indigo-600 bg-indigo-50/60 text-indigo-900 shadow-xs"
+                                : "border-gray-100 hover:border-indigo-200 text-gray-600 bg-white"
+                            }`}
+                          >
+                            <div className={`p-1.5 rounded-lg mb-1 ${isSelected ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-500"}`}>
+                              <Icon className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="text-xs font-bold block text-gray-900 leading-tight">
+                              {item.title}
+                            </span>
+                            <span className="text-[10px] text-gray-400 font-medium block mt-0.5">
+                              {item.subtitle}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
                   {/* Location Input */}
                   <div>
-                    <label className="block text-xs font-semibold text-gray-800 mb-1">
-                      Location{" "}
-                      <span className="text-gray-400 font-normal">
-                        (Optional)
-                      </span>
+                    <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-1.5">
+                      3. Location <span className="text-gray-400 font-normal lowercase">(optional)</span>
                     </label>
-                    <input
-                      type="text"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="e.g. Kampala, Uganda"
-                      className="w-full h-10 px-3.5 rounded-xl border border-gray-200 text-xs text-gray-700 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-50 transition"
-                    />
+                    <div className="relative">
+                      <MapPin className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        placeholder="e.g. Kampala, Uganda"
+                        className="w-full h-10 pl-9 pr-3.5 rounded-xl border border-gray-200 text-xs text-gray-800 placeholder-gray-400 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-50 transition bg-white"
+                      />
+                    </div>
                   </div>
 
-                  {/* Action Button */}
+                  {/* Submit CTA */}
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full h-11 bg-indigo-600 text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-indigo-700 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all"
+                      className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20 active:scale-[0.99] transition-all cursor-pointer"
                     >
                       Start Learning Scenario
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
+
                 </form>
               </div>
 
+              {/* Skip Link */}
               {!videoDone && (
-                <div className="mt-3 text-center">
+                <div className="mt-4 text-center">
                   <button
                     type="button"
                     onClick={() => setVideoDone(true)}
-                    className="text-xs text-gray-400 hover:text-indigo-600 underline transition"
+                    className="text-xs text-gray-400 hover:text-indigo-600 underline transition cursor-pointer"
                   >
                     Skip video preview
                   </button>
@@ -222,6 +260,7 @@ export default function About() {
               )}
             </div>
           </section>
+
         </div>
       </main>
     </div>

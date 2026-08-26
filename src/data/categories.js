@@ -1,14 +1,25 @@
 export const categories = [
   {
+    id: "foundations",
+    name: "0. Foundations",
+    description: "The basic building blocks — greetings, the alphabet, and numbers — used across every lesson that follows.",
+    image: "/src/assets/fundamentals.jpg",
+    lessons: [
+      { id: "basic-greetings", title: "Basic Greetings", level: "Beginner", scenario: "Learn the core signs for hello, good morning, good afternoon, and good evening." },
+      { id: "the-alphabet", title: "The Alphabet", level: "Beginner", scenario: "Learn the fingerspelling alphabet, letter by letter." },
+      { id: "numbers", title: "Numbers", level: "Beginner", scenario: "Learn to sign numbers 0 through 10." },
+    ],
+  },
+  {
     id: "meeting-someone",
     name: "A. Meeting Someone",
     description: "Real situations for greeting people and introducing yourself.",
     image: "/src/assets/greetings.jpg",
     lessons: [
-      { id: "introducing-yourself", title: "Introducing Yourself", level: "Beginner" },
-      { id: "asking-someones-name", title: "Asking Someone's Name", level: "Beginner" },
-      { id: "greeting-at-different-times", title: "Greeting at Different Times of Day", level: "Beginner" },
-      { id: "spelling-your-name", title: "Spelling Your Name", level: "Beginner" }, // uses fingerspelling/alphabet
+      { id: "spelling-your-name", title: "Spelling Your Name", level: "Beginner", scenario: "Use the alphabet you just learned to fingerspell your own name." },
+      { id: "introducing-yourself", title: "Introducing Yourself", level: "Beginner", scenario: "Greet someone using what you've learned, then fingerspell your name to introduce yourself." },
+      { id: "asking-someones-name", title: "Asking Someone's Name", level: "Beginner", scenario: "Ask a Deaf person their name and understand their fingerspelled reply." },
+      { id: "greeting-at-different-times", title: "Greeting at Different Times of Day", level: "Beginner", scenario: "Practice choosing the right greeting sign depending on the time of day." },
     ],
   },
   {
@@ -17,10 +28,10 @@ export const categories = [
     description: "Talking about the people in your life.",
     image: "/src/assets/family.jpg",
     lessons: [
-      { id: "talking-about-your-family", title: "Talking About Your Family", level: "Beginner" },
-      { id: "describing-people-you-know", title: "Describing People You Know", level: "Beginner" }, // uses colours, appearance
-      { id: "inviting-a-friend-over", title: "Inviting a Friend Over", level: "Beginner" },
-      { id: "making-weekend-plans", title: "Making Weekend Plans", level: "Beginner" }, // uses time, dates
+      { id: "talking-about-your-family", title: "Talking About Your Family", level: "Beginner", scenario: "Tell someone who's in your family and how many siblings you have." },
+      { id: "describing-people-you-know", title: "Describing People You Know", level: "Beginner", scenario: "Describe what a friend or relative looks like so someone can recognize them." },
+      { id: "inviting-a-friend-over", title: "Inviting a Friend Over", level: "Beginner", scenario: "Invite a friend to your home and agree on a day and time." },
+      { id: "making-weekend-plans", title: "Making Weekend Plans", level: "Beginner", scenario: "Plan a weekend activity together and settle on when to meet." },
     ],
   },
   {
@@ -29,11 +40,11 @@ export const categories = [
     description: "Handling daily situations — shopping, time, weather.",
     image: "/src/assets/communication.jpg",
     lessons: [
-      { id: "asking-for-prices", title: "Asking for Prices", level: "Beginner" }, // uses numbers
-      { id: "telling-the-time", title: "Telling the Time", level: "Beginner" },
-      { id: "talking-about-the-weather", title: "Talking About the Weather", level: "Beginner" },
-      { id: "ordering-food", title: "Ordering Food", level: "Beginner" },
-      { id: "shopping-for-clothes", title: "Shopping for Clothes", level: "Beginner" }, // uses colours, shapes
+      { id: "asking-for-prices", title: "Asking for Prices", level: "Beginner", scenario: "Ask how much something costs and understand the seller's answer." },
+      { id: "telling-the-time", title: "Telling the Time", level: "Beginner", scenario: "Ask what time it is and tell someone the time yourself." },
+      { id: "talking-about-the-weather", title: "Talking About the Weather", level: "Beginner", scenario: "Comment on today's weather and ask what it's like where they are." },
+      { id: "ordering-food", title: "Ordering Food", level: "Beginner", scenario: "Order a meal at a restaurant and answer questions about your order." },
+      { id: "shopping-for-clothes", title: "Shopping for Clothes", level: "Beginner", scenario: "Ask for a different size or color while shopping for clothes." },
     ],
   },
   {
@@ -42,12 +53,12 @@ export const categories = [
     description: "Hospitals, banks, police, and asking for help.",
     image: "/src/assets/communication.jpg",
     lessons: [
-      { id: "asking-for-directions", title: "Asking for Directions", level: "Beginner" },
-      { id: "at-the-pharmacy", title: "At the Pharmacy", level: "Beginner" },
-      { id: "at-the-hospital", title: "At the Hospital", level: "Beginner" },
-      { id: "talking-to-the-police", title: "Talking to the Police", level: "Beginner" },
-      { id: "at-the-bank", title: "At the Bank", level: "Beginner" },
-      { id: "emergency-communication", title: "Emergency Communication", level: "Beginner" },
+      { id: "asking-for-directions", title: "Asking for Directions", level: "Beginner", scenario: "Ask someone how to get somewhere and follow their directions." },
+      { id: "at-the-pharmacy", title: "At the Pharmacy", level: "Beginner", scenario: "Explain what you need at a pharmacy and understand the pharmacist's questions." },
+      { id: "at-the-hospital", title: "At the Hospital", level: "Beginner", scenario: "Describe how you're feeling to a nurse or doctor." },
+      { id: "talking-to-the-police", title: "Talking to the Police", level: "Beginner", scenario: "Explain a situation clearly and calmly to a police officer." },
+      { id: "at-the-bank", title: "At the Bank", level: "Beginner", scenario: "Explain what you need to do at the bank counter." },
+      { id: "emergency-communication", title: "Emergency Communication", level: "Beginner", scenario: "Signal for urgent help and explain what's wrong quickly." },
     ],
   },
   {
@@ -56,9 +67,9 @@ export const categories = [
     description: "Talking about your job, school, and daily routine.",
     image: "/src/assets/fundamentals.jpg",
     lessons: [
-      { id: "talking-about-your-job", title: "Talking About Your Job", level: "Beginner" },
-      { id: "at-school", title: "At School", level: "Beginner" },
-      { id: "describing-your-daily-routine", title: "Describing Your Daily Routine", level: "Beginner" },
+      { id: "talking-about-your-job", title: "Talking About Your Job", level: "Beginner", scenario: "Tell someone what you do for work." },
+      { id: "at-school", title: "At School", level: "Beginner", scenario: "Talk about your class, teacher, or subject at school." },
+      { id: "describing-your-daily-routine", title: "Describing Your Daily Routine", level: "Beginner", scenario: "Walk someone through what a normal day looks like for you." },
     ],
   },
   {
@@ -67,10 +78,10 @@ export const categories = [
     description: "Sentence structure, questions, negation, and facial grammar — used across real conversations.",
     image: "/src/assets/grammer.jpg",
     lessons: [
-      { id: "asking-questions", title: "Asking Questions (WH & Yes/No)", level: "Beginner" },
-      { id: "saying-no", title: "Saying No & Disagreeing", level: "Beginner" },
-      { id: "using-facial-expressions", title: "Using Facial Expressions", level: "Beginner" },
-      { id: "using-eye-gaze", title: "Using Eye Gaze in Conversation", level: "Beginner" },
+      { id: "asking-questions", title: "Asking Questions (WH & Yes/No)", level: "Beginner", scenario: "Ask someone a question and recognize when they're asking you one." },
+      { id: "saying-no", title: "Saying No & Disagreeing", level: "Beginner", scenario: "Politely disagree with someone or turn down a request." },
+      { id: "using-facial-expressions", title: "Using Facial Expressions", level: "Beginner", scenario: "Use the right facial expression so your meaning comes through clearly." },
+      { id: "using-eye-gaze", title: "Using Eye Gaze in Conversation", level: "Beginner", scenario: "Use eye gaze to show who or what you're referring to." },
     ],
   },
   {
@@ -79,10 +90,10 @@ export const categories = [
     description: "Etiquette, respect, and inclusion within the Deaf community.",
     image: "/src/assets/culture.jpg",
     lessons: [
-      { id: "intro-to-deaf-culture", title: "Introduction to Deaf Culture", level: "Beginner" },
-      { id: "respectful-communication", title: "Respectful Communication", level: "Beginner" },
-      { id: "deaf-etiquette", title: "Deaf Etiquette", level: "Beginner" },
-      { id: "inclusion", title: "Inclusion", level: "Beginner" },
+      { id: "intro-to-deaf-culture", title: "Introduction to Deaf Culture", level: "Beginner", scenario: "Understand the basics of Deaf culture before your next conversation." },
+      { id: "respectful-communication", title: "Respectful Communication", level: "Beginner", scenario: "Communicate respectfully with a Deaf person in everyday situations." },
+      { id: "deaf-etiquette", title: "Deaf Etiquette", level: "Beginner", scenario: "Know what to do and avoid when getting someone's attention respectfully." },
+      { id: "inclusion", title: "Inclusion", level: "Beginner", scenario: "Recognize small ways to make a Deaf person feel included." },
     ],
   },
 ];

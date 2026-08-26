@@ -196,28 +196,33 @@ export default function LearnerDash() {
           </div>
         </div>
 
+       
         {/* Overall Progress Tracker */}
-        <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-            <p className="font-bold text-gray-900 text-sm sm:text-base">
-              UgSL Beginner Path: <span className="text-indigo-600">{progressPercent}% Complete</span>
-            </p>
-            <span className="text-xs text-gray-500 font-medium">
-              {signsMastered} of {totalSigns} signs mastered
-            </span>
-          </div>
+<Link
+  to="/progress"
+  className="block bg-white rounded-3xl p-6 border border-gray-100 shadow-xs hover:shadow-md hover:border-indigo-100 transition-all cursor-pointer group"
+>
+  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+    <p className="font-bold text-gray-900 text-sm sm:text-base group-hover:text-indigo-600 transition-colors">
+      UgSL Beginner Path: <span className="text-indigo-600">{progressPercent}% Complete</span>
+    </p>
+    <span className="text-xs text-gray-500 font-medium">
+      {signsMastered} of {totalSigns} signs mastered
+    </span>
+  </div>
 
-          <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-indigo-600 rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
+  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+    <div
+      className="h-full bg-indigo-600 rounded-full transition-all duration-500"
+      style={{ width: `${progressPercent}%` }}
+    />
+  </div>
 
-          <p className="text-xs text-gray-400 mt-3">
-            Progress is saved to your account automatically.
-          </p>
-        </div>
+  <div className="flex items-center justify-between mt-3 text-xs text-gray-400">
+    <span>Progress is saved to your account automatically.</span>
+    <span className="font-medium text-indigo-600 group-hover:underline">View Detailed Progress &rarr;</span>
+  </div>
+</Link>
 
       </main>
     </div>

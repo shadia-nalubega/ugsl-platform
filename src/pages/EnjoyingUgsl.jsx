@@ -3,69 +3,52 @@ import { ArrowRight } from "lucide-react";
 import Navbar from "../components/Navbar.jsx";
 
 export default function EnjoyingUgSL() {
-  const signingGifUrl =
-    "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnU2dTR0YzFpcGZuN2dwanIya3ZzNGI3NmpwejJicWJnMmxjbXowbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/p3ZPEgR60zYibeyqG2/giphy.gif";
-
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      <main className="min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <main className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4 sm:px-6 py-12">
+        <div className="w-full max-w-2xl text-center">
           
-          {/* Signing character GIF */}
-          <div className="flex justify-center">
-            <div className="w-full max-w-md aspect-square rounded-3xl bg-indigo-50 flex items-center justify-center overflow-hidden shadow-sm border border-indigo-100/50">
-              <img
-                src={signingGifUrl}
-                alt="UgSL Signing Animation"
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <p className="text-indigo-600 font-semibold uppercase tracking-wide text-xs sm:text-sm">
+            You made it this far!
+          </p>
+
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mt-3 leading-tight">
+            Are you enjoying UgSL?
+          </h1>
+
+          <p className="text-gray-600 text-base sm:text-lg mt-4 leading-relaxed max-w-lg mx-auto">
+            You've already learned your first signs. Why not keep going?
+          </p>
+
+          <p className="text-gray-500 text-sm sm:text-base mt-2 leading-relaxed max-w-lg mx-auto">
+            Create an account to save your progress, keep track of what
+            you've learned, and continue your UgSL journey.
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
+            <Link
+              to="/auth/signup"
+              className="bg-indigo-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-indigo-700 transition inline-flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+            >
+              Create Your Account
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <Link
+              to="/courses"
+              className="inline-flex justify-center items-center border border-gray-200 text-gray-600 px-7 py-3.5 rounded-xl font-medium hover:bg-gray-50 transition cursor-pointer"
+            >
+              Maybe Later
+            </Link>
           </div>
 
-          {/* Message */}
-          <div className="text-center md:text-left">
-            <p className="text-indigo-600 font-semibold uppercase tracking-wide text-sm">
-              You made it this far!
-            </p>
+          <p className="text-gray-400 text-xs sm:text-sm mt-5">
+            You can keep exploring UgSL without an account.
+          </p>
 
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mt-3 leading-tight">
-              Are you enjoying UgSL?
-            </h1>
-
-            <p className="text-gray-500 text-lg mt-5 leading-relaxed max-w-lg">
-              You've already learned your first signs. Why not keep going?
-            </p>
-
-            <p className="text-gray-500 mt-3 leading-relaxed max-w-lg">
-              Create an account to save your progress, keep track of what
-              you've learned, and continue your UgSL journey.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center md:justify-start">
-              {/* Create account */}
-              <Link
-                to="/auth/signup"
-                className="bg-indigo-600 text-white px-7 py-4 rounded-xl font-semibold hover:bg-indigo-700 transition inline-flex items-center justify-center gap-2"
-              >
-                Create Your Account
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-
-              {/* Continue without account */}
-              <Link
-                to="/courses"
-                className="inline-flex justify-center items-center border border-gray-200 text-gray-600 px-7 py-3.5 rounded-xl font-medium hover:bg-gray-50 transition"
-              >
-                Maybe Later
-              </Link>
-            </div>
-
-            <p className="text-gray-400 text-sm mt-5">
-              You can keep exploring UgSL without an account.
-            </p>
-          </div>
         </div>
       </main>
     </div>

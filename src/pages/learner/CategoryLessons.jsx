@@ -55,6 +55,9 @@ export default function CategoryLessons() {
                 </div>
                 <p className="text-xs text-purple-600 font-medium">{lesson.level}</p>
                 <p className="text-sm font-medium">{lesson.title}</p>
+                {lesson.scenario && (
+                  <p className="text-xs text-gray-500 mt-1">{lesson.scenario}</p>
+                )}
               </Link>
             );
           })}

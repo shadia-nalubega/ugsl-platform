@@ -72,7 +72,7 @@ export const LESSONS = [
       { sign: "Numbers 1 - 5", description: "Palm facing inward or outward depending on context count.", tip: "Hold palm steady at chest level." }
     ],
     prompt: {
-      partnerText: "🔢 How many students are in your practice group today?",
+      partnerText: " How many students are in your practice group today?",
       partnerInstruction: "Respond with a count between 1 and 20.",
       learnerTask: "Sign: 'We are five students here.'",
       modelAnswer: "STUDENT WE FIVE"

@@ -7,7 +7,7 @@ const NAV_LINKS = [
   { label: "Courses", path: "/courses" },
   { label: "Dictionary", path: "/dictionary" },
   { label: "Practice", path: "/practice" },
-  { label: "About Us", path: "/about" },
+  { label: "About Us", path: "/about-us" },
   { label: "Community", path: "/community" },
 ];
 

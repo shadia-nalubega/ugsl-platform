@@ -44,8 +44,8 @@ export default function Dictionary() {
   const [selectedLetter, setSelectedLetter] = useState("");
 
   /*
-   * Build one list of signs from the existing categories.js file.
-   * This means we don't have to duplicate the vocabulary.
+   * Build one list of signs from categories.js.
+   * This avoids duplicating vocabulary in the dictionary.
    */
   const allSigns = useMemo(() => {
     const signs = [];
@@ -74,12 +74,23 @@ export default function Dictionary() {
   }, []);
 
   /*
-   * Search and alphabet filtering
+   * Search and alphabet filtering.
+   *
+   * Search uses startsWith() instead of includes().
+   *
+   * Example:
+   * "a"  -> Alphabet, Asking for Help...
+   * "fa" -> Family
+   * "m"  -> Medicine, Mother...
+   *
+   * A word is NOT returned simply because the searched
+   * letters appear somewhere in the middle of the word.
    */
   const searchResults = allSigns.filter((sign) => {
+    const query = searchTerm.trim().toLowerCase();
+
     const matchesSearch =
-      searchTerm.trim() === "" ||
-      sign.word.toLowerCase().includes(searchTerm.toLowerCase());
+      query === "" || sign.word.toLowerCase().startsWith(query);
 
     const matchesLetter =
       selectedLetter === "" ||
@@ -94,6 +105,21 @@ export default function Dictionary() {
   const clearSearch = () => {
     setSearchTerm("");
     setSelectedLetter("");
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setSelectedLetter("");
+  };
+
+  const handleLetterClick = (letter) => {
+    setSelectedLetter(letter);
+    setSearchTerm("");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -115,9 +141,8 @@ export default function Dictionary() {
 
           {/* Description */}
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600">
-            Search and explore Ugandan Sign Language signs.
-            Find words, discover categories, and learn signs for
-            everyday communication.
+            Search and explore Ugandan Sign Language signs. Find words,
+            discover categories, and learn signs for everyday communication.
           </p>
 
           {/* Search box */}
@@ -130,10 +155,7 @@ export default function Dictionary() {
             <input
               type="text"
               value={searchTerm}
-              onChange={(event) => {
-                setSearchTerm(event.target.value);
-                setSelectedLetter("");
-              }}
+              onChange={handleSearchChange}
               placeholder="Search for a sign..."
               aria-label="Search for a sign"
               className="w-full border-none bg-transparent px-3 py-4 text-gray-800 outline-none placeholder:text-gray-400"
@@ -141,6 +163,7 @@ export default function Dictionary() {
 
             {searchTerm && (
               <button
+                type="button"
                 onClick={clearSearch}
                 aria-label="Clear search"
                 className="rounded-full p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
@@ -156,7 +179,6 @@ export default function Dictionary() {
           MAIN CONTENT
       ========================== */}
       <main className="mx-auto max-w-6xl px-6 py-12">
-
         {/* =========================
             SEARCH RESULTS
         ========================== */}
@@ -172,14 +194,12 @@ export default function Dictionary() {
 
                 <p className="mt-1 text-sm text-gray-500">
                   {searchResults.length}{" "}
-                  {searchResults.length === 1
-                    ? "sign"
-                    : "signs"}{" "}
-                  found
+                  {searchResults.length === 1 ? "sign" : "signs"} found
                 </p>
               </div>
 
               <button
+                type="button"
                 onClick={clearSearch}
                 className="flex w-fit items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-900 hover:text-gray-900"
               >
@@ -246,15 +266,7 @@ export default function Dictionary() {
                   <button
                     key={letter}
                     type="button"
-                    onClick={() => {
-                      setSelectedLetter(letter);
-                      setSearchTerm("");
-
-                      window.scrollTo({
-                        top: 0,
-                        behavior: "smooth",
-                      });
-                    }}
+                    onClick={() => handleLetterClick(letter)}
                     className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 transition hover:border-gray-900 hover:bg-gray-900 hover:text-white"
                   >
                     {letter}
@@ -341,8 +353,8 @@ function EmptyResults() {
       </h3>
 
       <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-        We couldn't find a sign matching your search.
-        Try another word or browse the dictionary by category.
+        We couldn't find a sign beginning with your search.
+        Try another word or browse the dictionary by letter.
       </p>
     </div>
   );

@@ -4,11 +4,12 @@ import logo from "../assets/logo.png";
 
 const NAV_LINKS = [
   { label: "Home", path: "/" },
-  { label: "Courses", path: "/courses" },
+  // { label: "Courses", path: "/courses" },
   { label: "Dictionary", path: "/dictionary" },
   { label: "Practice", path: "/practice" },
   { label: "About Us", path: "/about-us" },
   { label: "Community", path: "/community" },
+  { label: "Live Classes", path: "/live-classes" },
 ];
 
 export default function Navbar() {

@@ -7,6 +7,16 @@ import {
   TrendingUp,
   Clock,
   ShieldCheck,
+  Sparkles,
+  Home,
+  BookOpen,
+  Compass,
+  FileText,
+  Award,
+  Trophy,
+  Calendar,
+  Search,
+  Bell,
 } from "lucide-react";
 
 import Navbar from "../../components/Navbar.jsx";
@@ -16,64 +26,76 @@ export default function Community() {
   const [posts, setPosts] = useState([
     {
       id: 1,
-      name: "Sarah",
+      name: "BrainYolivia",
       role: "Learner",
-      time: "10 minutes ago",
+      time: "2 hours ago",
       content:
-        "I finally learned the signs for Hello and Good morning today!",
-      likes: 12,
-      replies: 4,
+        "What's the best way to stay consistent with learning?",
+      likes: 34,
+      replies: 120,
       liked: false,
+      tags: ["LearningHabits", "Motivation", "TimeManagement"],
     },
     {
       id: 2,
-      name: "John",
+      name: "Katie02",
       role: "Learner",
-      time: "35 minutes ago",
+      time: "4 hours ago",
       content:
-        "Does anyone have tips for remembering new UgSL signs more easily?",
-      likes: 8,
-      replies: 6,
+        "How I landed a freelance gig after completing the Business Strategy course...",
+      likes: 28,
+      replies: 43,
       liked: false,
+      tags: ["CareerJourney", "Freelancing", "BusinessCourse"],
     },
     {
       id: 3,
-      name: "Grace",
+      name: "Sarah_M",
       role: "Learner",
-      time: "1 hour ago",
+      time: "6 hours ago",
       content:
-        "Nice to meet everyone here! I am currently working through the Beginner lessons.",
-      likes: 15,
-      replies: 3,
+        "Just finished my first UI/UX project! Here's what I learned about designing for impact.",
+      likes: 52,
+      replies: 67,
       liked: false,
+      tags: ["Design", "UIUX", "Portfolio"],
     },
   ]);
 
-  const popularTopics = [
+  const trendingHashtags = [
+    "LearningStreak",
+    "DesignInspo",
+    "ChallengeAccepted",
+    "StudySetup",
+    "WomenTech",
+    "CareerSwitch",
+    "DailyWin",
+    "MyFirstCourse",
+  ];
+
+  const peopleToFollow = [
+    { name: "Uchiha_Obito", role: "UX Enthusiast" },
+    { name: "Karina01", role: "Developer" },
+    { name: "JaneDoe", role: "Data Scientist" },
+    { name: "AlexSmith", role: "Product Designer" },
+  ];
+
+  const peerGroups = [
     {
-      title: "Beginner UgSL Tips",
-      replies: 24,
+      name: "Business & Leadership Learners",
+      description: "For future entrepreneurs, marketers, and business strategists.",
+      members: "4.2k",
     },
     {
-      title: "How do you practice signing?",
-      replies: 18,
-    },
-    {
-      title: "UgSL signs for everyday conversations",
-      replies: 15,
-    },
-    {
-      title: "Introduce yourself in UgSL",
-      replies: 11,
+      name: "Design & Creative Circle",
+      description: "A space for UI/UX designers, illustrators, and visual storytellers.",
+      members: "3.5k",
     },
   ];
 
   function handleCreatePost(event) {
     event.preventDefault();
-
-    if (!newPost.trim()) {
-      return;
-    }
+    if (!newPost.trim()) return;
 
     const post = {
       id: Date.now(),
@@ -84,6 +106,7 @@ export default function Community() {
       likes: 0,
       replies: 0,
       liked: false,
+      tags: [],
     };
 
     setPosts((currentPosts) => [post, ...currentPosts]);
@@ -108,367 +131,223 @@ export default function Community() {
     <>
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-10">
-
-        {/* ========================= */}
-        {/* HEADER */}
-        {/* ========================= */}
-
-        <section className="mb-8">
-
-          <div className="flex items-center gap-3">
-
-            <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-              <Users
-                size={25}
-                className="text-purple-600"
-              />
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* User Profile Bar - Top */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6 flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">
+              BR
             </div>
-
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                UgSL Community
-              </h1>
-
-              <p className="text-gray-500 mt-1">
-                Learn, share, ask questions, and connect with other learners.
-              </p>
+              <h3 className="font-semibold text-gray-900">Budiarti R.</h3>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Available for work</span>
+                <span className="text-xs text-gray-400">Follow</span>
+              </div>
             </div>
-
           </div>
-
-        </section>
-
-        {/* ========================= */}
-        {/* COMMUNITY STATS */}
-        {/* ========================= */}
-
-        <section className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
-
-          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-5">
-
-            <div className="flex items-center gap-3">
-
-              <div className="w-11 h-11 rounded-xl bg-purple-100 flex items-center justify-center">
-                <Users
-                  size={22}
-                  className="text-purple-600"
-                />
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-500">
-                  Community Members
-                </p>
-
-                <p className="text-2xl font-bold text-gray-900">
-                  128
-                </p>
-              </div>
-
+          
+          {/* Quick Stats */}
+          <div className="flex items-center gap-6">
+            <div className="text-center">
+              <p className="text-sm font-bold text-gray-900">12</p>
+              <p className="text-xs text-gray-400">Courses</p>
             </div>
-
-          </div>
-
-          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-5">
-
-            <div className="flex items-center gap-3">
-
-              <div className="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center">
-                <MessageCircle
-                  size={22}
-                  className="text-blue-600"
-                />
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-500">
-                  Discussions
-                </p>
-
-                <p className="text-2xl font-bold text-gray-900">
-                  46
-                </p>
-              </div>
-
+            <div className="text-center">
+              <p className="text-sm font-bold text-gray-900">8</p>
+              <p className="text-xs text-gray-400">Certificates</p>
             </div>
-
-          </div>
-
-          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-5">
-
-            <div className="flex items-center gap-3">
-
-              <div className="w-11 h-11 rounded-xl bg-green-100 flex items-center justify-center">
-                <TrendingUp
-                  size={22}
-                  className="text-green-600"
-                />
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-500">
-                  Active Today
-                </p>
-
-                <p className="text-2xl font-bold text-gray-900">
-                  32
-                </p>
-              </div>
-
+            <div className="text-center">
+              <p className="text-sm font-bold text-gray-900">156</p>
+              <p className="text-xs text-gray-400">Following</p>
             </div>
-
           </div>
+        </div>
 
-        </section>
-
-        {/* ========================= */}
-        {/* MAIN CONTENT */}
-        {/* ========================= */}
-
-        <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_1fr] gap-6">
-
-          {/* ========================= */}
-          {/* LEFT COLUMN */}
-          {/* ========================= */}
-
-          <section>
-
-            {/* CREATE POST */}
-
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 mb-6">
-
-              <h2 className="text-lg font-bold text-gray-900">
-                Start a Discussion
-              </h2>
-
-              <p className="text-sm text-gray-500 mt-1">
-                Share something with the UgSL community.
-              </p>
-
-              <form
-                onSubmit={handleCreatePost}
-                className="mt-4"
-              >
-
-                <textarea
-                  value={newPost}
-                  onChange={(event) =>
-                    setNewPost(event.target.value)
-                  }
-                  rows={4}
-                  placeholder="What would you like to share?"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none resize-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100"
-                />
-
-                <div className="flex justify-end mt-3">
-
-                  <button
-                    type="submit"
-                    disabled={!newPost.trim()}
-                    className="inline-flex items-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
-                  >
-                    <Send size={16} />
-                    Post
-                  </button>
-
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Center - Feed (spans 2 columns) */}
+          <div className="lg:col-span-2">
+            {/* Create Post */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
+                  Y
                 </div>
-
-              </form>
-
+                <form onSubmit={handleCreatePost} className="flex-1">
+                  <input
+                    type="text"
+                    value={newPost}
+                    onChange={(e) => setNewPost(e.target.value)}
+                    placeholder="Share your learning journey..."
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                  />
+                  <div className="flex justify-end mt-3">
+                    <button
+                      type="submit"
+                      disabled={!newPost.trim()}
+                      className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-lg text-sm font-semibold hover:shadow-lg hover:-translate-y-0.5 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+                    >
+                      <Send className="inline w-4 h-4 mr-2" />
+                      Post
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
 
-            {/* DISCUSSIONS */}
-
+            {/* Trending Discussions */}
             <div className="flex items-center justify-between mb-4">
-
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  Recent Discussions
-                </h2>
-
-                <p className="text-sm text-gray-500 mt-1">
-                  See what other learners are talking about.
-                </p>
-              </div>
-
+              <h2 className="text-lg font-bold text-gray-900">Trending Discussions</h2>
+              <button className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">See all →</button>
             </div>
 
             <div className="space-y-4">
-
               {posts.map((post) => (
-
                 <article
                   key={post.id}
-                  className="bg-white border border-gray-100 rounded-2xl shadow-sm p-6"
+                  className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
                 >
-
-                  {/* USER */}
-
+                  {/* User Info */}
                   <div className="flex items-center gap-3">
-
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                      <span className="text-purple-700 font-bold">
-                        {post.name.charAt(0)}
-                      </span>
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
+                      {post.name.charAt(0)}
                     </div>
-
                     <div>
-
                       <div className="flex items-center gap-2">
-
-                        <h3 className="font-semibold text-gray-900">
-                          {post.name}
-                        </h3>
-
-                        <span className="text-xs bg-purple-50 text-purple-600 px-2 py-1 rounded-full">
-                          {post.role}
-                        </span>
-
+                        <h3 className="font-semibold text-gray-900">{post.name}</h3>
+                        <span className="text-xs text-gray-400">•</span>
+                        <span className="text-xs text-gray-400">{post.time}</span>
                       </div>
-
-                      <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
-                        <Clock size={12} />
-                        {post.time}
+                      <div className="flex items-center gap-1 text-xs text-gray-400">
+                        <span className="bg-gray-100 px-2 py-0.5 rounded-full">Learner</span>
                       </div>
-
                     </div>
-
                   </div>
 
-                  {/* POST CONTENT */}
+                  {/* Content */}
+                  <p className="text-gray-700 mt-3 leading-relaxed">{post.content}</p>
 
-                  <p className="text-gray-700 leading-relaxed mt-4">
-                    {post.content}
-                  </p>
+                  {/* Tags */}
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {post.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-xs text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full hover:bg-indigo-100 cursor-pointer"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
-                  {/* ACTIONS */}
-
-                  <div className="flex items-center gap-5 mt-5 pt-4 border-t border-gray-100">
-
+                  {/* Actions */}
+                  <div className="flex items-center gap-6 mt-4 pt-3 border-t border-gray-100">
                     <button
                       onClick={() => handleLike(post.id)}
-                      className={`inline-flex items-center gap-2 text-sm transition ${
-                        post.liked
-                          ? "text-purple-600"
-                          : "text-gray-500 hover:text-purple-600"
+                      className={`inline-flex items-center gap-2 text-sm font-medium transition ${
+                        post.liked ? "text-red-500" : "text-gray-500 hover:text-red-500"
                       }`}
                     >
-                      <Heart
-                        size={17}
-                        fill={post.liked ? "currentColor" : "none"}
-                      />
-
+                      <Heart className="w-4 h-4" fill={post.liked ? "currentColor" : "none"} />
                       {post.likes}
                     </button>
-
-                    <button className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-purple-600 transition">
-                      <MessageCircle size={17} />
-                      {post.replies} Replies
+                    <button className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-indigo-600 transition font-medium">
+                      <MessageCircle className="w-4 h-4" />
+                      {post.replies} replies
                     </button>
-
                   </div>
-
                 </article>
-
               ))}
-
             </div>
 
-          </section>
-
-          {/* ========================= */}
-          {/* RIGHT COLUMN */}
-          {/* ========================= */}
-
-          <aside className="space-y-6">
-
-            {/* POPULAR TOPICS */}
-
-            <section className="bg-white border border-gray-100 rounded-2xl shadow-sm p-6">
-
-              <div className="flex items-center gap-2 mb-5">
-
-                <TrendingUp
-                  size={20}
-                  className="text-purple-600"
-                />
-
-                <h2 className="text-lg font-bold text-gray-900">
-                  Popular Discussions
-                </h2>
-
-              </div>
-
-              <div className="space-y-4">
-
-                {popularTopics.map((topic) => (
-
-                  <button
-                    key={topic.title}
-                    className="w-full text-left group"
-                  >
-
-                    <p className="text-sm font-medium text-gray-800 group-hover:text-purple-600 transition">
-                      {topic.title}
-                    </p>
-
-                    <p className="text-xs text-gray-400 mt-1">
-                      {topic.replies} replies
-                    </p>
-
+            {/* Live Session Card */}
+            <div className="mt-6 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white">
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5" />
+                    <span className="text-sm font-medium">Live Session This Friday</span>
+                  </div>
+                  <h3 className="text-xl font-bold mt-2">"Designing for Impact"</h3>
+                  <p className="text-indigo-100 mt-1 text-sm">May 24 • 6 PM (GMT)</p>
+                  <p className="text-indigo-50 mt-2 text-sm max-w-md">
+                    Join our expert-led live workshop on creating meaningful user experiences.
+                  </p>
+                  <button className="mt-4 bg-white text-indigo-600 px-6 py-2 rounded-lg text-sm font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                    Save Your Seat →
                   </button>
+                </div>
+                <div className="hidden sm:block">
+                  <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center">
+                    <Calendar className="w-12 h-12 opacity-50" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          {/* Right Sidebar */}
+          <aside className="space-y-6">
+            {/* Trending Hashtags */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h3 className="font-bold text-gray-900 mb-3">Trending Hashtags</h3>
+              <div className="flex flex-wrap gap-2">
+                {trendingHashtags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full hover:bg-indigo-100 cursor-pointer transition"
+                  >
+                    #{tag}
+                  </span>
                 ))}
-
               </div>
+            </div>
 
-            </section>
-
-            {/* COMMUNITY GUIDELINES */}
-
-            <section className="bg-purple-50 border border-purple-100 rounded-2xl p-6">
-
-              <div className="flex items-center gap-2">
-
-                <ShieldCheck
-                  size={20}
-                  className="text-purple-600"
-                />
-
-                <h2 className="text-lg font-bold text-gray-900">
-                  Community Guidelines
-                </h2>
-
+            {/* Peer Groups */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h3 className="font-bold text-gray-900 mb-3">Peer Groups</h3>
+              <div className="space-y-4">
+                {peerGroups.map((group) => (
+                  <div key={group.name} className="border-b border-gray-100 last:border-0 pb-3 last:pb-0">
+                    <h4 className="font-semibold text-sm text-gray-800">{group.name}</h4>
+                    <p className="text-xs text-gray-500 mt-1">{group.description}</p>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-xs text-gray-400">{group.members} members</span>
+                      <button className="text-xs font-medium text-indigo-600 hover:text-indigo-700">
+                        Join Group +
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
+            </div>
 
-              <ul className="mt-4 space-y-3 text-sm text-gray-600">
-
-                <li>
-                  • Be respectful and supportive.
-                </li>
-
-                <li>
-                  • Help other learners when you can.
-                </li>
-
-                <li>
-                  • Keep discussions related to learning.
-                </li>
-
-                <li>
-                  • Do not share harmful or inappropriate content.
-                </li>
-
-              </ul>
-
-            </section>
-
+            {/* People to Follow */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h3 className="font-bold text-gray-900 mb-3">People to Follow</h3>
+              <div className="space-y-3">
+                {peopleToFollow.map((person) => (
+                  <div key={person.name} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                        {person.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">{person.name}</p>
+                        <p className="text-xs text-gray-400">{person.role}</p>
+                      </div>
+                    </div>
+                    <button className="text-xs font-medium text-indigo-600 hover:text-indigo-700">
+                      + Follow
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </aside>
-
         </div>
-
-      </main>
+      </div>
     </>
   );
 }

@@ -1,268 +1,623 @@
-import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Play,
   ArrowRight,
-  CheckCircle2,
-  Users,
-  GraduationCap,
-  Store,
   Sparkles,
   BookOpen,
-  MapPin,
-  Compass
+  Compass,
+  Play,
 } from "lucide-react";
-import heroImg from "../../assets/hero.jpg";
 
-const GOALS = [
-  {
-    id: "friends",
-    icon: Users,
-    title: "Meet Deaf Friends & Community",
-    desc: "Connect naturally in social and community settings.",
-  },
-  {
-    id: "education",
-    icon: GraduationCap,
-    title: "Work in Education / Classroom",
-    desc: "Support students and colleagues in educational environments.",
-  },
-  {
-    id: "business",
-    icon: Store,
-    title: "Everyday Service & Business",
-    desc: "Handle customer interactions and daily transactions smoothly.",
-  },
-];
+import beginnerImg from "../../assets/fundamentals.jpg";
+import intermediateImg from "../../assets/culture.jpg";
+import advancedImg from "../../assets/public.jpg";
 
-const JOURNEYS = [
+/* =========================================================
+   LEARNING LEVEL DATA
+========================================================= */
+
+const LEVELS = [
   {
     id: "beginner",
+    number: "01",
     title: "Beginner",
-    subtitle: "New to UgSL",
+    eyebrow: "NEW TO UGSL",
+    tagline: "Build your foundation",
+    description:
+      "Learn the essential signs you need to start communicating in Ugandan Sign Language.",
+    topics: [
+      "Everyday signs",
+      "Greetings",
+      "Introductions",
+    ],
     icon: Sparkles,
+    image: beginnerImg,
   },
+
   {
     id: "intermediate",
+    number: "02",
     title: "Intermediate",
-    subtitle: "Basic Signs",
+    eyebrow: "BUILD CONFIDENCE",
+    tagline: "Start communicating naturally",
+    description:
+      "Expand your vocabulary and connect signs together through practical conversations.",
+    topics: [
+      "Vocabulary",
+      "Conversations",
+      "Everyday situations",
+    ],
     icon: BookOpen,
+    image: intermediateImg,
   },
+
   {
     id: "advanced",
+    number: "03",
     title: "Advanced",
-    subtitle: "Fluent Flow",
+    eyebrow: "DEVELOP FLUENCY",
+    tagline: "Communicate with confidence",
+    description:
+      "Practice natural conversations, complex expressions, and real-world communication.",
+    topics: [
+      "Complex expressions",
+      "Natural flow",
+      "Real-world communication",
+    ],
     icon: Compass,
+    image: advancedImg,
   },
 ];
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
 
 export default function About() {
   const navigate = useNavigate();
-  const videoRef = useRef(null);
 
-  const [videoDone, setVideoDone] = useState(false);
-  const [selectedGoal, setSelectedGoal] = useState("friends");
-  const [journeyLevel, setJourneyLevel] = useState("beginner");
-  const [location, setLocation] = useState("");
-
-  function handlePlay() {
-    videoRef.current?.play();
+const handleSelectLevel = (level) => {
+  if (level === "beginner") {
+    navigate("/dashboard");
+    return;
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log({ selectedGoal, journeyLevel, location });
-    navigate("/lesson/introduction/overview");
-  }
-
+  // Intermediate and Advanced dashboards don't exist yet —
+  // leaving these as no-ops for now.
+};
   return (
-    <div className="min-h-screen bg-[#faf9ff] flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      <main className="max-w-5xl w-full mx-auto">
-        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-          
-          {/* ================= LEFT SIDE (Video/Hero) ================= */}
-          <section className="w-full h-full flex flex-col">
-            <div className="relative bg-indigo-600 rounded-3xl overflow-hidden min-h-[340px] lg:min-h-full flex items-center justify-center shadow-sm border border-indigo-100">
-              <video
-                ref={videoRef}
-                poster={heroImg}
-                onEnded={() => setVideoDone(true)}
-                className="w-full h-full object-cover absolute inset-0"
-              />
+    <div className="min-h-screen bg-white text-gray-900 overflow-hidden">
 
-              {!videoDone && (
-                <button
-                  type="button"
-                  onClick={handlePlay}
-                  aria-label="Play video preview"
-                  className="relative z-10 w-16 h-16 bg-white/95 rounded-full flex items-center justify-center shadow-xl shadow-indigo-950/20 hover:scale-105 transition-all cursor-pointer group"
-                >
-                  <Play className="w-6 h-6 text-indigo-600 fill-indigo-600 ml-1 group-hover:scale-110 transition-transform" />
-                </button>
-              )}
+      <HeroSection />
 
-              {/* Overlay Badge */}
-              {/* <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md rounded-xl px-3 py-1.5 border border-white/50 shadow-sm flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold text-gray-800 tracking-wide uppercase">
-                  UgSL Interactive Onboarding
-                </span>
-              </div> */}
-            </div>
-          </section>
+      <LearningJourney />
 
-          {/* ================= RIGHT SIDE (Form) ================= */}
-          <section className="w-full h-full flex flex-col">
-            <div className="w-full h-full bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 flex flex-col justify-between">
-              <div>
-                {/* Header */}
-                <div className="mb-6">
-                  <span className="text-indigo-600 text-xs font-bold uppercase tracking-wider bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
-                    Personalize Your Path
-                  </span>
-                  <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-2.5">
-                    What is your primary goal?
-                  </h1>
-                  <p className="text-gray-500 mt-1 text-xs sm:text-sm leading-relaxed">
-                    Select your objective and experience level to tailor your UgSL scenarios.
-                  </p>
-                </div>
+      <LevelSection
+        levels={LEVELS}
+        onSelectLevel={handleSelectLevel}
+      />
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  
-                  {/* Goal Selection Cards */}
-                  <div>
-                    <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2">
-                      1. Communication Goal
-                    </label>
-                    <div className="space-y-2">
-                      {GOALS.map((goal) => {
-                        const selected = selectedGoal === goal.id;
-                        const IconComponent = goal.icon;
-                        return (
-                          <button
-                            key={goal.id}
-                            type="button"
-                            onClick={() => setSelectedGoal(goal.id)}
-                            className={`w-full text-left p-3 rounded-2xl border-2 transition-all cursor-pointer ${
-                              selected
-                                ? "border-indigo-600 bg-indigo-50/50 text-indigo-950 shadow-xs"
-                                : "border-gray-100 hover:border-indigo-200 text-gray-700 bg-white"
-                            }`}
-                          >
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-3">
-                                <div
-                                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                                    selected
-                                      ? "bg-indigo-600 text-white"
-                                      : "bg-gray-100 text-gray-600"
-                                  }`}
-                                >
-                                  <IconComponent className="w-4 h-4" />
-                                </div>
-                                <div>
-                                  <p className="text-xs font-bold text-gray-900">
-                                    {goal.title}
-                                  </p>
-                                  <p className="text-[11px] text-gray-500 mt-0.5 leading-tight">
-                                    {goal.desc}
-                                  </p>
-                                </div>
-                              </div>
-                              {selected && (
-                                <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0 ml-2" />
-                              )}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+      <LearningCTA
+        onStart={() => handleSelectLevel("beginner")}
+      />
 
-                  {/* Journey / Experience Level Selection Cards */}
-                  <div>
-                    <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2">
-                      2. Select Your Journey (Experience Level)
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {JOURNEYS.map((item) => {
-                        const isSelected = journeyLevel === item.id;
-                        const Icon = item.icon;
-                        return (
-                          <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => setJourneyLevel(item.id)}
-                            className={`p-3 rounded-2xl border-2 text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
-                              isSelected
-                                ? "border-indigo-600 bg-indigo-50/60 text-indigo-900 shadow-xs"
-                                : "border-gray-100 hover:border-indigo-200 text-gray-600 bg-white"
-                            }`}
-                          >
-                            <div className={`p-1.5 rounded-lg mb-1 ${isSelected ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-500"}`}>
-                              <Icon className="w-3.5 h-3.5" />
-                            </div>
-                            <span className="text-xs font-bold block text-gray-900 leading-tight">
-                              {item.title}
-                            </span>
-                            <span className="text-[10px] text-gray-400 font-medium block mt-0.5">
-                              {item.subtitle}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+      <Footer
+        onSelectLevel={handleSelectLevel}
+        onDictionary={() => navigate("/dictionary")}
+        onAbout={() => navigate("/about")}
+      />
 
-                  {/* Location Input */}
-                  <div>
-                    <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-1.5">
-                      3. Location <span className="text-gray-400 font-normal lowercase">(optional)</span>
-                    </label>
-                    <div className="relative">
-                      <MapPin className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        placeholder="e.g. Kampala, Uganda"
-                        className="w-full h-10 pl-9 pr-3.5 rounded-xl border border-gray-200 text-xs text-gray-800 placeholder-gray-400 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-50 transition bg-white"
-                      />
-                    </div>
-                  </div>
+    </div>
+  );
+}
 
-                  {/* Submit CTA */}
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20 active:scale-[0.99] transition-all cursor-pointer"
-                    >
-                      Start Learning Scenario
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
 
-                </form>
-              </div>
+/* =========================================================
+   HERO SECTION
+========================================================= */
 
-              {/* Skip Link */}
-              {!videoDone && (
-                <div className="mt-4 text-center">
-                  <button
-                    type="button"
-                    onClick={() => setVideoDone(true)}
-                    className="text-xs text-gray-400 hover:text-indigo-600 underline transition cursor-pointer"
-                  >
-                    Skip video preview
-                  </button>
-                </div>
-              )}
-            </div>
-          </section>
+function HeroSection() {
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-violet-50 via-indigo-50 to-white">
+
+      {/* Background decoration */}
+
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-violet-200/40 rounded-full blur-3xl" />
+
+      <div className="absolute top-20 right-[-120px] w-96 h-96 bg-indigo-200/40 rounded-full blur-3xl" />
+
+      <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-14">
+
+        {/* Badge */}
+
+        <div className="flex justify-center">
+
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur border border-violet-100 px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm">
+
+            <Sparkles className="w-4 h-4" />
+
+            Learn Ugandan Sign Language
+
+          </span>
 
         </div>
-      </main>
+
+
+        {/* Heading */}
+
+        <div className="text-center max-w-3xl mx-auto mt-7">
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+
+            Your UgSL journey
+
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">
+              starts here.
+            </span>
+
+          </h1>
+
+
+          <p className="mt-6 text-lg sm:text-xl text-gray-500 leading-relaxed max-w-2xl mx-auto">
+            Choose a learning level that feels right for you and start
+            building your confidence in Ugandan Sign Language.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+  );
+}
+
+
+/* =========================================================
+   LEARNING JOURNEY
+========================================================= */
+
+function LearningJourney() {
+  return (
+    <section className="relative -mt-1 bg-white">
+
+      <div className="max-w-3xl mx-auto px-6 py-8">
+
+        <div className="flex items-center justify-center">
+
+          {/* Step 1 */}
+
+          <JourneyStep
+            number="1"
+            label="Learn"
+            active
+          />
+
+          <JourneyLine />
+
+          {/* Step 2 */}
+
+          <JourneyStep
+            number="2"
+            label="Practice"
+          />
+
+          <JourneyLine />
+
+          {/* Step 3 */}
+
+          <JourneyStep
+            number="3"
+            label="Communicate"
+          />
+
+        </div>
+
+      </div>
+
+    </section>
+  );
+}
+
+
+/* =========================================================
+   JOURNEY STEP
+========================================================= */
+
+function JourneyStep({ number, label, active = false }) {
+  return (
+    <div
+      className={`flex items-center gap-2 text-sm font-medium ${
+        active
+          ? "text-violet-700"
+          : "text-gray-400"
+      }`}
+    >
+
+      <span
+        className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+          active
+            ? "bg-violet-600 text-white"
+            : "bg-gray-100 text-gray-500"
+        }`}
+      >
+        {number}
+      </span>
+
+      <span className="hidden sm:block">
+        {label}
+      </span>
+
     </div>
+  );
+}
+
+
+/* =========================================================
+   JOURNEY LINE
+========================================================= */
+
+function JourneyLine() {
+  return (
+    <div className="w-8 sm:w-16 h-px bg-gray-200 mx-2 sm:mx-4" />
+  );
+}
+
+
+/* =========================================================
+   LEVEL SECTION
+========================================================= */
+
+function LevelSection({ levels, onSelectLevel }) {
+  return (
+    <section className="relative py-16 sm:py-20">
+
+      <div className="max-w-7xl mx-auto px-6">
+
+        <SectionHeading />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+
+          {levels.map((level) => (
+            <LevelCard
+              key={level.id}
+              level={level}
+              onSelect={() => onSelectLevel(level.id)}
+            />
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+  );
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+function SectionHeading() {
+  return (
+    <div className="text-center mb-12">
+
+      <p className="text-sm font-bold uppercase tracking-[0.2em] text-violet-600">
+        Choose your path
+      </p>
+
+      <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-gray-900">
+        Where would you like to start?
+      </h2>
+
+      <p className="mt-4 text-gray-500 max-w-xl mx-auto">
+        There is no wrong place to begin. Pick the level that matches
+        your current experience.
+      </p>
+
+    </div>
+  );
+}
+
+
+/* =========================================================
+   LEVEL CARD
+========================================================= */
+
+function LevelCard({ level, onSelect }) {
+  const Icon = level.icon;
+
+  return (
+    <article className="group bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-violet-100/70 hover:-translate-y-2 transition-all duration-300">
+
+      {/* Image */}
+
+      <div className="relative h-64 overflow-hidden">
+
+        <img
+          src={level.image}
+          alt={`${level.title} UgSL learning`}
+          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+
+        {/* Image overlay */}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 via-transparent to-transparent" />
+
+
+        {/* Number */}
+
+        <div className="absolute top-5 left-5 w-10 h-10 rounded-xl bg-white/90 backdrop-blur flex items-center justify-center text-sm font-bold text-violet-700 shadow-lg">
+          {level.number}
+        </div>
+
+
+        {/* Icon */}
+
+        <div className="absolute bottom-5 left-5 w-11 h-11 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg">
+
+          <Icon className="w-5 h-5 text-white" />
+
+        </div>
+
+      </div>
+
+
+      {/* Content */}
+
+      <div className="p-7">
+
+        <p className="text-xs font-bold tracking-[0.15em] text-violet-600">
+          {level.eyebrow}
+        </p>
+
+        <h3 className="mt-2 text-2xl font-bold text-gray-900">
+          {level.title}
+        </h3>
+
+        <p className="mt-2 text-lg font-semibold text-gray-700">
+          {level.tagline}
+        </p>
+
+        <p className="mt-3 text-sm leading-6 text-gray-500">
+          {level.description}
+        </p>
+
+
+        {/* Topics */}
+
+        <div className="flex flex-wrap gap-2 mt-5">
+
+          {level.topics.map((topic) => (
+            <span
+              key={topic}
+              className="rounded-full bg-violet-50 px-3 py-1 text-xs font-medium text-violet-700"
+            >
+              {topic}
+            </span>
+          ))}
+
+        </div>
+
+
+        {/* Button */}
+
+        <button
+          type="button"
+          onClick={onSelect}
+          className="mt-7 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-violet-200 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+        >
+
+          Start {level.title}
+
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+
+        </button>
+
+      </div>
+
+    </article>
+  );
+}
+
+
+/* =========================================================
+   CALL TO ACTION
+========================================================= */
+
+function LearningCTA({ onStart }) {
+  return (
+    <section className="px-6 pb-20">
+
+      <div className="relative max-w-5xl mx-auto overflow-hidden rounded-3xl bg-gradient-to-r from-violet-600 to-indigo-600 px-8 py-12 sm:px-12 text-white">
+
+        {/* Decorative shapes */}
+
+        <div className="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-white/10" />
+
+        <div className="absolute -left-20 -bottom-32 w-72 h-72 rounded-full bg-white/5" />
+
+
+        <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+
+          <div>
+
+            <div className="flex items-center gap-2 text-violet-200 text-sm font-semibold">
+
+              <Play className="w-4 h-4 fill-current" />
+
+              Learn at your own pace
+
+            </div>
+
+            <h2 className="mt-3 text-2xl sm:text-3xl font-bold">
+              Ready to start signing?
+            </h2>
+
+            <p className="mt-2 text-violet-100 max-w-xl">
+              Choose a level above and take your first step toward
+              more confident communication.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            onClick={onStart}
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-violet-700 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+          >
+            Start Learning
+
+            <ArrowRight className="w-4 h-4" />
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+  );
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+function Footer({
+  onSelectLevel,
+  onDictionary,
+  onAbout,
+}) {
+  return (
+    <footer className="bg-gray-950 text-white">
+
+      <div className="max-w-7xl mx-auto px-6 py-12">
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+
+          {/* Brand */}
+
+          <div className="md:col-span-2">
+
+            <h2 className="text-2xl font-bold">
+              Ug<span className="text-violet-400">SL</span>
+            </h2>
+
+            <p className="mt-4 text-gray-400 max-w-md leading-relaxed">
+              Making Ugandan Sign Language easier to learn,
+              practice, and use in everyday life.
+            </p>
+
+            <p className="mt-5 text-sm text-gray-500">
+              Learn. Connect. Include.
+            </p>
+
+          </div>
+
+
+          {/* Learning */}
+
+          <FooterColumn title="Learning">
+
+            <FooterButton
+              onClick={() => onSelectLevel("beginner")}
+            >
+              Beginner
+            </FooterButton>
+
+            <FooterButton
+              onClick={() => onSelectLevel("intermediate")}
+            >
+              Intermediate
+            </FooterButton>
+
+            <FooterButton
+              onClick={() => onSelectLevel("advanced")}
+            >
+              Advanced
+            </FooterButton>
+
+          </FooterColumn>
+
+
+          {/* Platform */}
+
+          <FooterColumn title="Platform">
+
+            <FooterButton onClick={onDictionary}>
+              Dictionary
+            </FooterButton>
+
+            <FooterButton onClick={onAbout}>
+              About UgSL
+            </FooterButton>
+
+          </FooterColumn>
+
+        </div>
+
+
+        {/* Bottom */}
+
+        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+
+          <p className="text-sm text-gray-500">
+            © {new Date().getFullYear()} UgSL. All rights reserved.
+          </p>
+
+          <p className="text-sm text-gray-500">
+            Learn. Connect. Include.
+          </p>
+
+        </div>
+
+      </div>
+
+    </footer>
+  );
+}
+
+
+/* =========================================================
+   FOOTER COLUMN
+========================================================= */
+
+function FooterColumn({ title, children }) {
+  return (
+    <div>
+
+      <h3 className="font-semibold">
+        {title}
+      </h3>
+
+      <ul className="mt-4 space-y-3 text-sm text-gray-400">
+        {children}
+      </ul>
+
+    </div>
+  );
+}
+
+
+/* =========================================================
+   FOOTER BUTTON
+========================================================= */
+
+function FooterButton({ onClick, children }) {
+  return (
+    <li>
+
+      <button
+        type="button"
+        onClick={onClick}
+        className="hover:text-violet-400 transition"
+      >
+        {children}
+      </button>
+
+    </li>
   );
 }

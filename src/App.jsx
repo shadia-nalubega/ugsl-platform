@@ -19,6 +19,9 @@ import SecondLessonOverview from "./pages/onboarding/SecondLessonOverview.jsx";
 import SecondLesson from "./pages/learner/SecondLesson.jsx";
 import Quiz from "./pages/learner/Quiz.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
+import TeacherDashboard from "./pages/teachers/TeacherDashboard.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import AdminLessons from "./pages/admin/AdminLessons.jsx";
 
 export default function App() {
   return (
@@ -59,6 +62,9 @@ export default function App() {
         <Route path="/teacher/create-lesson" element={<CreateLesson />} />
         <Route path="/enjoying-ugsl" element={<EnjoyingUgSL />} />
         <Route path="/auth/signup" element={<Signup />} />
+        <Route path="/teacher/dashboard" element={<TeacherDashboard />}/>
+        <Route path="/admin/dashboard" element={<AdminDashboard />}/>
+        <Route path="/admin/lessons" element={<AdminLessons />}/>
       </Routes>
     </BrowserRouter>
   );

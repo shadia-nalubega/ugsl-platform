@@ -1,93 +1,194 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Heart, Users, Video, ArrowRight } from "lucide-react";
-import Navbar from "../components/Navbar.jsx"; // Adjust path if needed
+import { Link } from "react-router-dom";
 
-export default function AboutUs() {
-  const navigate = useNavigate();
+/*
+  AboutUgsl.jsx — public "About the project" marketing page.
 
+  NOTE ON NAMING: your onboarding form already lives at pages/about.jsx
+  ("Tell us about you"). This is a DIFFERENT page — the public story/mission
+  page you'd link from the Navbar. I named it AboutUgsl.jsx on purpose so it
+  can't get swapped with the onboarding file the way App.jsx/page files did
+  before. Route it as:
+
+    import AboutUgsl from "./pages/AboutUgsl";
+    <Route path="/about" element={<AboutUgsl />} />
+
+  COLOR SYSTEM (copied from Hero.jsx, nothing new introduced):
+    violet-600 / indigo-600  -> primary gradient, links, headline accent
+    violet-100 / indigo-50   -> soft backgrounds
+    gray-700 / gray-500      -> body text, muted text
+
+  Everywhere you see [ ... ] below is a placeholder — real copy you should
+  swap in (team bio, contact info, etc). Everything else is real content
+  pulled from what you've told me about the project.
+*/
+
+export default function AboutUgsl() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
+    <div className="bg-white">
+      {/* ---------- HERO ---------- */}
+      <section className="relative bg-gradient-to-br from-violet-100 via-indigo-50 to-white overflow-hidden">
+        <div className="relative z-10 max-w-3xl mx-auto text-center px-8 py-24">
+          <span className="inline-block bg-violet-100 text-indigo-600 text-sm font-medium px-3 py-1 rounded-full">
+            Our story
+          </span>
+          <h1 className="text-5xl font-bold mt-4 leading-tight">
+            Built to close a
+            <br />
+            <span className="text-violet-600">communication gap</span>
+          </h1>
+          <p className="text-gray-500 mt-6 max-w-xl mx-auto">
+            UgSL exists because learning Uganda Sign Language shouldn't be
+            harder than it needs to be — for Deaf learners, hearing learners,
+            and everyone in between.
+          </p>
+        </div>
 
-      {/* Mission Statement */}
-      <section className="max-w-3xl mx-auto px-6 pt-16 pb-12 text-center">
-        <p className="text-xs font-semibold uppercase tracking-wider text-purple-600 mb-3">
-          Our Mission
-        </p>
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-          Bridging the gap between Uganda's Deaf and hearing communities, one real conversation at a time.
-        </h1>
+        {/* same decorative wave device as Hero.jsx, kept subtle here */}
+        <svg
+          className="absolute bottom-0 left-0 w-full h-24 opacity-30 -z-0"
+          viewBox="0 0 440 100"
+          fill="none"
+        >
+          <path d="M0 60 Q 110 20 220 60 T 440 60" stroke="#a78bfa" strokeWidth="2" />
+        </svg>
       </section>
 
-      {/* The Gap */}
-      <section className="max-w-3xl mx-auto px-6 py-12 border-t border-gray-100">
-        <h2 className="text-xl font-bold text-gray-900 mb-3">Why this exists</h2>
-        <p className="text-gray-600 leading-relaxed">
-          Most hearing people in Uganda have never had a reason — or a way — to learn Ugandan Sign Language (UgSL). That gap shows up in small, everyday moments: a shopkeeper who can't greet a Deaf customer, a classmate who can't ask a Deaf student their name, a stranger who can't help someone find their way. UgSL exists to close that gap, starting with the situations people actually run into.
-        </p>
-      </section>
-
-      {/* Our Approach */}
-      <section className="max-w-3xl mx-auto px-6 py-12 border-t border-gray-100">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">How we approach it</h2>
-
-        <div className="space-y-6">
-          <div className="flex gap-4">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
-              <Users size={18} className="text-purple-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 mb-1">Built with Deaf community input</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                We're building this alongside members of Uganda's Deaf community, not guessing on their behalf.
-              </p>
-            </div>
+      {/* ---------- OUR STORY ---------- */}
+      <section className="max-w-6xl mx-auto px-8 py-20">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl font-bold mb-6">Why UgSL</h2>
+            <p className="text-gray-700 mb-4">
+              This started with one friendship. During COVID, a Deaf friend
+              offered to teach me sign language — we had the time, and she had
+              the patience. When she moved away, I lost my only way to keep
+              learning.
+            </p>
+            <p className="text-gray-700 mb-4">
+              Years later, wanting to pick it back up to help in
+              disability-inclusion spaces, I looked for a way back in.
+              Existing courses were scattered and inconsistent, and the one
+              Ugandan Sign Language app I could find no longer worked on
+              modern phones.
+            </p>
+            <p className="text-gray-700">
+              UgSL is the platform I wished existed — starting on the web,
+              built with and for the Deaf community, not around it.
+            </p>
           </div>
 
-          <div className="flex gap-4">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
-              <Video size={18} className="text-purple-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 mb-1">Real situations, not vocabulary lists</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Every lesson is built around something you'll actually need to do — greet someone, ask for help, introduce yourself — not disconnected words to memorize.
+          {/* decorative panel, matches Hero.jsx's blur-circle + wave device
+              instead of a stock photo */}
+          <div className="relative flex items-center justify-center">
+            <div className="absolute w-80 h-80 bg-violet-200 rounded-full blur-3xl opacity-60 -z-10" />
+            <div className="relative bg-white rounded-2xl shadow-xl p-10 w-full max-w-sm border border-violet-100">
+              <p className="text-lg font-medium text-gray-800">
+                "Communicate. Connect. Create Inclusion."
               </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
-              <Heart size={18} className="text-purple-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 mb-1">Free to start, self-paced</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Learn on your own schedule, at your own speed — no pressure, no deadlines.
-              </p>
+              <p className="text-sm text-gray-500 mt-4">— UgSL's founding idea</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Who's Building It — honest, not a fake team grid */}
-      <section className="max-w-3xl mx-auto px-6 py-12 border-t border-gray-100">
-        <h2 className="text-xl font-bold text-gray-900 mb-3">Who's building this</h2>
-        <p className="text-gray-600 leading-relaxed">
-          UgSL is an early-stage project, currently being built by a single developer in partnership with members of the Deaf community. We're growing carefully, with community guidance shaping every lesson — rather than rushing to scale before getting it right.
-        </p>
+      {/* ---------- MISSION + PILLARS ---------- */}
+      <section className="bg-violet-50 rounded-none py-20">
+        <div className="max-w-4xl mx-auto text-center px-8">
+          <h2 className="text-3xl font-bold mb-6">Our mission</h2>
+          <p className="text-xl text-gray-700 mb-12 max-w-2xl mx-auto">
+            To make Uganda Sign Language learnable, practical, and
+            community-led — so it stops being the reason someone can't make a
+            friend or help someone in need.
+          </p>
+
+          <div className="grid sm:grid-cols-3 gap-6">
+            <PillarCard
+              title="Deaf-led design"
+              body="Lessons are shaped with input from the Deaf community, not guessed at from the outside."
+            />
+            <PillarCard
+              title="Real situations, not vocab lists"
+              body="Every lesson teaches you to actually perform a conversation — greeting someone, introducing yourself — not memorize isolated signs."
+            />
+            <PillarCard
+              title="Learn at your pace"
+              body="Try a lesson before you sign up. Track your own progress and streaks as you go."
+            />
+          </div>
+        </div>
       </section>
 
-      {/* CTA */}
-      <section className="max-w-3xl mx-auto px-6 py-16 text-center border-t border-gray-100">
-        <button
-          onClick={() => navigate("/onboarding")}
-          className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-3.5 rounded-xl transition shadow-sm active:scale-95"
-        >
-          Start Learning <ArrowRight size={18} />
-        </button>
+      {/* ---------- HOW WE'RE BUILDING THIS (replaces SynthMind's stat block) ---------- */}
+      <section className="bg-gray-900 text-white py-20">
+        <div className="max-w-5xl mx-auto px-8">
+          <h2 className="text-3xl font-bold mb-12 text-center">
+            How we're building this
+          </h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <PrincipleStat
+              label="Content workflow"
+              detail="Teachers draft lessons, Admins review and approve before anything publishes"
+            />
+            <PrincipleStat
+              label="Lesson structure"
+              detail="Real-life situation → Learn → Practice → Interact → Perform"
+            />
+            <PrincipleStat
+              label="Community input"
+              detail="Reaching out to Deaf creators and organizations to shape content"
+            />
+            <PrincipleStat
+              label="Status"
+              detail="[ e.g. Early access — MVP in active development ]"
+            />
+          </div>
+        </div>
       </section>
+
+      {/* ---------- CTA ---------- */}
+      <section className="max-w-4xl mx-auto px-8 py-20 text-center">
+        <div className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-2xl p-12">
+          <h2 className="text-3xl font-bold mb-4">Want to help build UgSL?</h2>
+          <p className="text-lg opacity-90 mb-8 max-w-xl mx-auto">
+            Whether you're Deaf, hearing, a developer, or someone who's just
+            curious — there's a place for you here.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/onboarding"
+              className="bg-white text-violet-600 font-medium px-6 py-3 rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            >
+              Start learning →
+            </Link>
+            <a
+              href="mailto:[ your contact email ]"
+              className="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
+            >
+              Get in touch
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* ---------- small local components, kept in-file for simplicity ---------- */
+
+function PillarCard({ title, body }) {
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-md text-left">
+      <h3 className="font-bold text-gray-900 mb-2">{title}</h3>
+      <p className="text-gray-600 text-sm">{body}</p>
+    </div>
+  );
+}
+
+function PrincipleStat({ label, detail }) {
+  return (
+    <div>
+      <div className="text-violet-400 font-semibold mb-2">{label}</div>
+      <div className="text-gray-300 text-sm">{detail}</div>
     </div>
   );
 }

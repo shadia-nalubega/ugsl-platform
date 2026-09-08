@@ -1,356 +1,366 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// 1. Import your custom logo asset here (adjust path to match your project structure)
+import logo from "../../assets/logo.png"; // or logo.svg / logo.jpeg
+
 import {
-  BookOpen,
-  Clock,
-  CheckCircle,
-  FileText,
   Plus,
   ChevronRight,
-  GraduationCap,
-  Inbox,
+  Search,
+  Bell,
+  Menu,
+  X,
+  LayoutDashboard,
+  Video,
+  BookOpen,
+  Users,
+  Settings,
+  LogOut,
 } from "lucide-react";
 
-import Navbar from "../../components/Navbar.jsx";
-
-// Central place to control status colors/icons so the stat cards,
-// filter pills, and row badges never drift out of sync with each other.
-const STATUS_META = {
-  Published: {
-    icon: CheckCircle,
-    text: "text-green-700",
-    bg: "bg-green-100",
-    solidBg: "bg-green-600",
-  },
-  "Pending Review": {
-    icon: Clock,
-    text: "text-orange-700",
-    bg: "bg-orange-100",
-    solidBg: "bg-orange-500",
-  },
-  Draft: {
-    icon: FileText,
-    text: "text-gray-600",
-    bg: "bg-gray-100",
-    solidBg: "bg-gray-500",
-  },
-};
-
 export default function TeacherDashboard() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("Dashboard");
   const navigate = useNavigate();
 
-  // Placeholder data for now.
-  // Later this will come from the backend/database.
-  const [lessons] = useState([
-    {
-      id: 1,
-      title: "Greetings",
-      category: "Greetings",
-      level: "Beginner",
-      status: "Published",
-      learners: 42,
-    },
-    {
-      id: 2,
-      title: "Family",
-      category: "Family",
-      level: "Beginner",
-      status: "Published",
-      learners: 31,
-    },
-    {
-      id: 3,
-      title: "Numbers",
-      category: "Numbers",
-      level: "Beginner",
-      status: "Pending Review",
-      learners: 0,
-    },
-    {
-      id: 4,
-      title: "Introduction",
-      category: "Greetings",
-      level: "Beginner",
-      status: "Draft",
-      learners: 0,
-    },
-  ]);
-
-  // "All" plus each status is now a real filter, not just a number to look at.
-  const [activeFilter, setActiveFilter] = useState("All");
-
-  const counts = useMemo(
-    () => ({
-      All: lessons.length,
-      Published: lessons.filter((l) => l.status === "Published").length,
-      "Pending Review": lessons.filter((l) => l.status === "Pending Review")
-        .length,
-      Draft: lessons.filter((l) => l.status === "Draft").length,
-    }),
-    [lessons]
-  );
-
-  const totalLearners = lessons.reduce(
-    (total, lesson) => total + lesson.learners,
-    0
-  );
-
-  const visibleLessons =
-    activeFilter === "All"
-      ? lessons
-      : lessons.filter((lesson) => lesson.status === activeFilter);
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50/60 via-slate-50 to-slate-50">
-      <Navbar />
+    <div className="min-h-screen bg-[#eef2f6] flex flex-col text-slate-800 font-sans">
+      {/* ================= UNIFIED TOP HEADER ================= */}
+      <header className="h-16 bg-white border-b border-slate-200/80 px-4 lg:px-8 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
+        {/* Left: Mobile Toggle + Imported Logo */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 text-slate-500 hover:text-slate-900 lg:hidden rounded-lg hover:bg-slate-100 cursor-pointer"
+          >
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
 
-      <main className="max-w-7xl mx-auto px-6 py-10">
-        {/* ========================= */}
-        {/* HEADER */}
-        {/* ========================= */}
+          {/* IMPORTED LOGO CONTAINER */}
+          <div 
+            className="flex items-center gap-3 cursor-pointer select-none" 
+            onClick={() => navigate("/")}
+          >
+            <img
+              src={logo}
+              alt="Portal Logo"
+              className="h-9 w-auto max-w-[140px] object-contain"
+            />
+          </div>
+        </div>
 
-        <section className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-              <GraduationCap size={26} className="text-purple-600" />
+        {/* Center: Quick Search Bar */}
+        <div className="flex-1 max-w-md mx-4 hidden md:block">
+          <div className="relative">
+            <Search
+              size={16}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+            />
+            <input
+              type="text"
+              placeholder="Search lessons, students, or signs..."
+              className="w-full bg-slate-50 text-xs text-slate-800 pl-9 pr-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:bg-white transition"
+            />
+          </div>
+        </div>
+
+        {/* Right: Actions & User Avatar */}
+        <div className="flex items-center gap-3">
+          <button className="relative p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition cursor-pointer">
+            <Bell size={18} />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-600 rounded-full"></span>
+          </button>
+
+          <div className="h-6 w-px bg-slate-200 mx-1 hidden sm:block"></div>
+
+          <div className="flex items-center gap-3 cursor-pointer">
+            <div className="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs border border-indigo-200">
+              TR
             </div>
-
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                Teacher Dashboard
-              </h1>
-              <p className="text-gray-500 mt-1">
-                Create, manage, and track your UgSL lessons.
+            <div className="hidden sm:block text-left">
+              <p className="text-xs font-bold text-slate-800 leading-tight">
+                Teacher Profile
               </p>
+              <p className="text-[10px] text-slate-400">Instructor Mode</p>
             </div>
           </div>
+        </div>
+      </header>
 
-          <button
-            onClick={() => navigate("/teacher/create-lesson")}
-            className="inline-flex items-center justify-center gap-2 bg-purple-600 text-white px-5 py-3 rounded-xl font-medium hover:bg-purple-700 transition shrink-0"
-          >
-            <Plus size={19} />
-            Create New Lesson
-          </button>
-        </section>
+      {/* ================= BODY WRAPPER ================= */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Mobile Sidebar Overlay */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
 
-        {/* ========================= */}
-        {/* STATS  →  now double as filters */}
-        {/* ========================= */}
-
-        <section
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8"
-          role="tablist"
-          aria-label="Filter lessons by status"
+        {/* ================= UNIFIED SIDEBAR ================= */}
+        <aside
+          className={`fixed lg:static top-16 left-0 z-40 h-[calc(100vh-4rem)] w-60 bg-white border-r border-slate-200/80 flex flex-col justify-between p-4 transition-transform duration-200 ease-in-out ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          }`}
         >
-          <StatFilterCard
-            label="My Lessons"
-            value={counts.All}
-            icon={BookOpen}
-            iconBg="bg-purple-100"
-            iconColor="text-purple-600"
-            active={activeFilter === "All"}
-            onClick={() => setActiveFilter("All")}
-          />
+          {/* Navigation Links */}
+          <nav className="space-y-1">
+            <NavItem
+              icon={<LayoutDashboard size={18} />}
+              label="Dashboard"
+              active={activeTab === "Dashboard"}
+              onClick={() => setActiveTab("Dashboard")}
+            />
+            <NavItem
+              icon={<Video size={18} />}
+              label="Live Sessions"
+              active={activeTab === "Live Sessions"}
+              onClick={() => setActiveTab("Live Sessions")}
+            />
+            <NavItem
+              icon={<BookOpen size={18} />}
+              label="Course Modules"
+              active={activeTab === "Course Modules"}
+              onClick={() => setActiveTab("Course Modules")}
+            />
+            <NavItem
+              icon={<Users size={18} />}
+              label="Students & Marks"
+              active={activeTab === "Students & Marks"}
+              onClick={() => setActiveTab("Students & Marks")}
+            />
+            <NavItem
+              icon={<Settings size={18} />}
+              label="Settings"
+              active={activeTab === "Settings"}
+              onClick={() => setActiveTab("Settings")}
+            />
+          </nav>
 
-          <StatFilterCard
-            label="Published"
-            value={counts.Published}
-            icon={CheckCircle}
-            iconBg="bg-green-100"
-            iconColor="text-green-600"
-            active={activeFilter === "Published"}
-            onClick={() => setActiveFilter("Published")}
-          />
+          {/* Bottom Sidebar Controls */}
+          <div className="pt-4 border-t border-slate-100">
+            <button className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition flex items-center gap-3 cursor-pointer">
+              <LogOut size={18} />
+              <span>Log Out</span>
+            </button>
+          </div>
+        </aside>
 
-          <StatFilterCard
-            label="Pending Review"
-            value={counts["Pending Review"]}
-            icon={Clock}
-            iconBg="bg-orange-100"
-            iconColor="text-orange-600"
-            active={activeFilter === "Pending Review"}
-            onClick={() => setActiveFilter("Pending Review")}
-          />
-
-          <StatFilterCard
-            label="Learners Reached"
-            value={totalLearners}
-            icon={GraduationCap}
-            iconBg="bg-blue-100"
-            iconColor="text-blue-600"
-            // Not a filterable status — shown for context, not clickable as a filter.
-            active={false}
-            onClick={undefined}
-          />
-        </section>
-
-        {/* ========================= */}
-        {/* LESSON LIST */}
-        {/* ========================= */}
-
-        <section className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-gray-100">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  {activeFilter === "All" ? "My Lessons" : activeFilter}
+        {/* ================= MAIN CONTENT AREA ================= */}
+        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Left Column (Schedule & Timetable) */}
+            <div className="lg:col-span-7 bg-white rounded-2xl p-6 shadow-xs border border-slate-200/80">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-slate-900">
+                  UgSL Timetable & Live Sessions
                 </h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  {activeFilter === "All"
-                    ? "Lessons you have created and their current status."
-                    : `${visibleLessons.length} lesson${
-                        visibleLessons.length === 1 ? "" : "s"
-                      }`}
-                </p>
+                <button
+                  onClick={() => navigate("/teacher/create-lesson")}
+                  className="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition cursor-pointer shadow-xs"
+                >
+                  <Plus size={15} /> Add Session
+                </button>
               </div>
 
-              {activeFilter !== "All" && (
-                <button
-                  onClick={() => setActiveFilter("All")}
-                  className="text-sm font-medium text-purple-600 hover:text-purple-700"
-                >
-                  Clear filter
-                </button>
-              )}
+              {/* Date Selector Row */}
+              <div className="flex items-center justify-between bg-slate-50 p-2 rounded-xl mb-6 text-xs text-slate-500 font-medium">
+                <span className="cursor-pointer px-2 py-1 hover:text-slate-900">Mon 07</span>
+                <span className="cursor-pointer px-2 py-1 hover:text-slate-900">Tue 08</span>
+                <span className="cursor-pointer px-2 py-1 hover:text-slate-900">Wed 09</span>
+                <span className="bg-indigo-600 text-white font-bold px-3 py-1.5 rounded-lg shadow-xs">
+                  Thu 10
+                </span>
+                <span className="cursor-pointer px-2 py-1 hover:text-slate-900">Fri 11</span>
+                <span className="cursor-pointer px-2 py-1 hover:text-slate-900">Sat 12</span>
+                <span className="cursor-pointer px-2 py-1 hover:text-slate-900">Sun 13</span>
+              </div>
+
+              {/* Timetable Items List */}
+              <div className="space-y-3.5">
+                <TimetableRow
+                  level="UG1"
+                  title="UgSL Greetings & Basics"
+                  room="Video Studio 1"
+                  time="8:00 am - 10:00 am"
+                  tag="ASSIGNMENT"
+                  tagBg="bg-amber-100 text-amber-700"
+                />
+                <TimetableRow
+                  level="UG2"
+                  title="Family & Kinship Signs"
+                  room="Lab 2 (Practice)"
+                  time="11:00 am - 12:00 pm"
+                  tag="LIVE DEMO"
+                  tagBg="bg-indigo-100 text-indigo-700"
+                />
+                <TimetableRow
+                  level="UG1"
+                  title="Ugandan Numbers & Currency"
+                  room="Online Classroom"
+                  time="02:00 pm - 03:00 pm"
+                  tag="HOMEWORK"
+                  tagBg="bg-purple-100 text-purple-700"
+                />
+                <TimetableRow
+                  level="UG2"
+                  title="Deaf Culture & History in Uganda"
+                  room="Main Hall"
+                  time="03:00 pm - 04:00 pm"
+                  tag="ASSIGNMENT"
+                  tagBg="bg-amber-100 text-amber-700"
+                />
+                <TimetableRow
+                  level="ST"
+                  title="Department Sign Review"
+                  room="Conference Room"
+                  time="04:00 pm - 05:00 pm"
+                  tag="MEETING"
+                  tagBg="bg-slate-100 text-slate-700"
+                />
+              </div>
             </div>
+
+            {/* Right Column (Indicators & Tasks) */}
+            <div className="lg:col-span-5 flex flex-col gap-6">
+              {/* KEY INDICATORS */}
+              <div className="bg-white rounded-2xl p-6 shadow-xs border border-slate-200/80">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold text-slate-900">Key Indicators</h2>
+                  <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
+                    This Week
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-xl shadow-xs">
+                    <p className="text-xs font-semibold text-orange-100 uppercase tracking-wider">
+                      Pending Review
+                    </p>
+                    <p className="text-3xl font-black mt-2">3</p>
+                    <p className="text-[11px] text-orange-100 mt-1">-12% from last week</p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-rose-500 to-red-600 text-white p-4 rounded-xl shadow-xs">
+                    <p className="text-xs font-semibold text-rose-100 uppercase tracking-wider">
+                      Needs Correction
+                    </p>
+                    <p className="text-3xl font-black mt-2">1</p>
+                    <p className="text-[11px] text-rose-100 mt-1">+25% last week</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* TASKS QUEUE */}
+              <div className="bg-white rounded-2xl p-6 shadow-xs border border-slate-200/80 flex-1">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold text-slate-900">UgSL Tasks & Modules</h2>
+                  <div className="flex gap-2 text-xs font-medium text-slate-400">
+                    <span className="text-indigo-600 font-bold underline cursor-pointer">
+                      Assignments
+                    </span>
+                    <span>•</span>
+                    <span className="hover:text-slate-600 cursor-pointer">Drafts</span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <TaskItem
+                    code="UG1"
+                    title="Alphabet & Fingerspelling Quiz"
+                    date="Monday, Dec 7th"
+                    status="DONE"
+                    statusBg="bg-indigo-100 text-indigo-700"
+                  />
+                  <TaskItem
+                    code="UG2"
+                    title="Review Emergency & Health Signs"
+                    date="Today"
+                    status="IN REVIEW"
+                    statusBg="bg-amber-100 text-amber-700"
+                  />
+                  <TaskItem
+                    code="UG2"
+                    title="Record Common Expressions Video"
+                    date="Today"
+                    status="PENDING"
+                    statusBg="bg-slate-100 text-slate-600"
+                  />
+                  <TaskItem
+                    code="UG1"
+                    title="UgSL Sentence Structure Intro"
+                    date="Tomorrow"
+                    status="DRAFT"
+                    statusBg="bg-rose-100 text-rose-700"
+                  />
+                </div>
+              </div>
+            </div>
+
           </div>
-
-          {visibleLessons.length === 0 ? (
-            <EmptyState
-              activeFilter={activeFilter}
-              onCreate={() => navigate("/teacher/create-lesson")}
-            />
-          ) : (
-            <div className="divide-y divide-gray-100">
-              {visibleLessons.map((lesson) => {
-                const meta = STATUS_META[lesson.status];
-                const StatusIcon = meta.icon;
-
-                return (
-                  <button
-                    key={lesson.id}
-                    onClick={() =>
-                      navigate(`/teacher/edit-lesson/${lesson.id}`)
-                    }
-                    className="w-full text-left p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 hover:bg-gray-50 transition group"
-                  >
-                    {/* Lesson info */}
-                    <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
-                        <FileText size={21} className="text-purple-600" />
-                      </div>
-
-                      <div>
-                        <h3 className="font-semibold text-gray-900">
-                          {lesson.title}
-                        </h3>
-                        <p className="text-sm text-gray-500 mt-1">
-                          {lesson.category} • {lesson.level}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Status + learners + affordance */}
-                    <div className="flex items-center gap-6 pl-15 md:pl-0">
-                      <div className="text-sm text-gray-500">
-                        {lesson.learners > 0
-                          ? `${lesson.learners} learners`
-                          : "No learners yet"}
-                      </div>
-
-                      <span
-                        className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium ${meta.bg} ${meta.text}`}
-                      >
-                        <StatusIcon size={13} />
-                        {lesson.status}
-                      </span>
-
-                      <ChevronRight
-                        size={18}
-                        className="text-gray-300 group-hover:text-purple-500 group-hover:translate-x-0.5 transition"
-                      />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </section>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
 
-// One card, two jobs: shows a number AND acts as a filter tab.
-// aria-pressed communicates the "toggled on" state to screen readers.
-function StatFilterCard({
-  label,
-  value,
-  icon: Icon,
-  iconBg,
-  iconColor,
-  active,
-  onClick,
-}) {
-  const clickable = Boolean(onClick);
-
+/* Helper Components */
+function NavItem({ icon, label, active, onClick }) {
   return (
     <button
-      type="button"
       onClick={onClick}
-      disabled={!clickable}
-      aria-pressed={clickable ? active : undefined}
-      className={`text-left bg-white border rounded-2xl shadow-sm p-5 transition ${
-        clickable ? "hover:border-purple-300 hover:shadow-md cursor-pointer" : "cursor-default"
-      } ${active ? "border-purple-500 ring-1 ring-purple-500" : "border-gray-100"}`}
+      className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold transition flex items-center gap-3 cursor-pointer ${
+        active
+          ? "bg-indigo-50 text-indigo-600"
+          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+      }`}
     >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-500">{label}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
-        </div>
-
-        <div
-          className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center`}
-        >
-          <Icon size={24} className={iconColor} />
-        </div>
-      </div>
+      <span className={active ? "text-indigo-600" : "text-slate-400"}>
+        {icon}
+      </span>
+      <span>{label}</span>
     </button>
   );
 }
 
-// Shown when a filter has zero matching lessons — including the
-// very first time a teacher lands here with nothing created yet.
-function EmptyState({ activeFilter, onCreate }) {
-  const isAll = activeFilter === "All";
-
+function TimetableRow({ level, title, room, time, tag, tagBg }) {
   return (
-    <div className="flex flex-col items-center text-center py-16 px-6">
-      <div className="w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
-        <Inbox size={26} className="text-gray-400" />
+    <div className="flex items-center justify-between p-3.5 rounded-xl hover:bg-slate-50 transition border-l-4 border-indigo-600 bg-white border border-slate-100 shadow-2xs">
+      <div className="flex items-center gap-3">
+        <span className="font-bold text-slate-400 text-xs w-8">{level}</span>
+        <div>
+          <h4 className="font-bold text-slate-800 text-sm leading-snug">{title}</h4>
+          <p className="text-xs text-slate-400">{room}</p>
+        </div>
       </div>
+      <div className="text-right">
+        <p className="text-xs font-semibold text-slate-600">{time}</p>
+        <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded mt-1 ${tagBg}`}>
+          {tag}
+        </span>
+      </div>
+    </div>
+  );
+}
 
-      <h3 className="font-semibold text-gray-900">
-        {isAll ? "No lessons yet" : `No lessons ${activeFilter.toLowerCase()}`}
-      </h3>
-
-      <p className="text-sm text-gray-500 mt-1 max-w-sm">
-        {isAll
-          ? "Create your first lesson to see it show up here."
-          : "Lessons matching this status will appear here once you have some."}
-      </p>
-
-      {isAll && (
-        <button
-          onClick={onCreate}
-          className="inline-flex items-center gap-2 mt-5 bg-purple-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-purple-700 transition"
-        >
-          <Plus size={16} />
-          Create New Lesson
-        </button>
-      )}
+function TaskItem({ code, title, date, status, statusBg }) {
+  return (
+    <div className="flex items-center justify-between pt-2 pb-2 border-b border-slate-100 last:border-0">
+      <div className="flex items-center gap-3">
+        <span className="font-bold text-slate-400 text-xs">{code}</span>
+        <div>
+          <div className="flex items-center gap-2">
+            <h4 className="font-semibold text-slate-800 text-sm">{title}</h4>
+            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${statusBg}`}>
+              {status}
+            </span>
+          </div>
+          <p className="text-xs text-slate-400">{date}</p>
+        </div>
+      </div>
+      <ChevronRight size={16} className="text-slate-300 hover:text-indigo-600 cursor-pointer" />
     </div>
   );
 }
